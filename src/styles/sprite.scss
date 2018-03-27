@@ -9,33 +9,55 @@
 //
 // At the bottom of this section, we provide information about the spritesheet itself
 // $spritesheet: width height image $spritesheet-sprites;
-$bg-btn-code-name: 'bg-btn-code';
-$bg-btn-code-x: 0px;
-$bg-btn-code-y: 96px;
-$bg-btn-code-offset-x: 0px;
-$bg-btn-code-offset-y: -96px;
-$bg-btn-code-width: 176px;
-$bg-btn-code-height: 60px;
-$bg-btn-code-total-width: 375px;
-$bg-btn-code-total-height: 156px;
-$bg-btn-code-image: '../static/sprite.png';
-$bg-btn-code: (0px, 96px, 0px, -96px, 176px, 60px, 375px, 156px, '../static/sprite.png', 'bg-btn-code', );
-$bg-btn-dialog-name: 'bg-btn-dialog';
-$bg-btn-dialog-x: 0px;
-$bg-btn-dialog-y: 0px;
-$bg-btn-dialog-offset-x: 0px;
-$bg-btn-dialog-offset-y: 0px;
-$bg-btn-dialog-width: 375px;
-$bg-btn-dialog-height: 86px;
-$bg-btn-dialog-total-width: 375px;
-$bg-btn-dialog-total-height: 156px;
-$bg-btn-dialog-image: '../static/sprite.png';
-$bg-btn-dialog: (0px, 0px, 0px, 0px, 375px, 86px, 375px, 156px, '../static/sprite.png', 'bg-btn-dialog', );
-$spritesheet-width: 375px;
-$spritesheet-height: 156px;
+$login-password-name: 'login-password';
+$login-password-x: 0px;
+$login-password-y: 122px;
+$login-password-offset-x: 0px;
+$login-password-offset-y: -122px;
+$login-password-width: 38px;
+$login-password-height: 46px;
+$login-password-total-width: 179px;
+$login-password-total-height: 168px;
+$login-password-image: '../static/sprite.png';
+$login-password: (0px, 122px, 0px, -122px, 38px, 46px, 179px, 168px, '../static/sprite.png', 'login-password', );
+$login-user-name: 'login-user';
+$login-user-x: 0px;
+$login-user-y: 68px;
+$login-user-offset-x: 0px;
+$login-user-offset-y: -68px;
+$login-user-width: 40px;
+$login-user-height: 44px;
+$login-user-total-width: 179px;
+$login-user-total-height: 168px;
+$login-user-image: '../static/sprite.png';
+$login-user: (0px, 68px, 0px, -68px, 40px, 44px, 179px, 168px, '../static/sprite.png', 'login-user', );
+$login-vcode-name: 'login-vcode';
+$login-vcode-x: 50px;
+$login-vcode-y: 68px;
+$login-vcode-offset-x: -50px;
+$login-vcode-offset-y: -68px;
+$login-vcode-width: 38px;
+$login-vcode-height: 44px;
+$login-vcode-total-width: 179px;
+$login-vcode-total-height: 168px;
+$login-vcode-image: '../static/sprite.png';
+$login-vcode: (50px, 68px, -50px, -68px, 38px, 44px, 179px, 168px, '../static/sprite.png', 'login-vcode', );
+$logo-name: 'logo';
+$logo-x: 0px;
+$logo-y: 0px;
+$logo-offset-x: 0px;
+$logo-offset-y: 0px;
+$logo-width: 179px;
+$logo-height: 58px;
+$logo-total-width: 179px;
+$logo-total-height: 168px;
+$logo-image: '../static/sprite.png';
+$logo: (0px, 0px, 0px, 0px, 179px, 58px, 179px, 168px, '../static/sprite.png', 'logo', );
+$spritesheet-width: 179px;
+$spritesheet-height: 168px;
 $spritesheet-image: '../static/sprite.png';
-$spritesheet-sprites: ($bg-btn-code, $bg-btn-dialog, );
-$spritesheet: (375px, 156px, '../static/sprite.png', $spritesheet-sprites, );
+$spritesheet-sprites: ($login-password, $login-user, $login-vcode, $logo, );
+$spritesheet: (179px, 168px, '../static/sprite.png', $spritesheet-sprites, );
 
 // The provided mixins are intended to be used with the array-like variables
 //
@@ -61,17 +83,31 @@ $spritesheet: (375px, 156px, '../static/sprite.png', $spritesheet-sprites, );
 //
 // // HTML
 // <i class="icon icon-home"></i>
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
 @mixin sprite-width($sprite) {
   width: nth($sprite, 5);
 }
 
 @mixin sprite-height($sprite) {
-  height: nth($sprite, 6);
+  height: nth($sprite, 6) + 2px;
 }
 
 @mixin sprite-position($sprite) {
-  $sprite-offset-x: nth($sprite, 3);
-  $sprite-offset-y: nth($sprite, 4);
+  $x:nth($sprite, 5) - nth($sprite, 7);
+  $y:nth($sprite, 6) - nth($sprite, 8);
+  $o-sprite-offset-x: strip-unit(nth($sprite, 3)) / strip-unit( $x );
+  $sprite-offset-x: 0 * 100%;
+  @if type-of($o-sprite-offset-x) == 'number' {
+    $sprite-offset-x: $o-sprite-offset-x * 100%;
+  }
+  $sprite-offset-y: strip-unit(nth($sprite, 4)) / strip-unit( $y ) * 100%;
   background-position: $sprite-offset-x  $sprite-offset-y;
 }
 

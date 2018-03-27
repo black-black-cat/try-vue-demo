@@ -1,6 +1,10 @@
 @import './icons';
-@import './theme-default/_var';
 @import '~sanitize.css/sanitize';
+@import 'mixins';
+
+*:focus {
+  outline: none;
+}
 
 input {
   border: none;

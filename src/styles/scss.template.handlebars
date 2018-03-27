@@ -70,17 +70,31 @@ ${{spritesheet_info.strings.name}}: ({{spritesheet.px.width}}, {{spritesheet.px.
 {{/block}}
 {{#block "sprite-functions"}}
 {{#if options.functions}}
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
 @mixin sprite-width($sprite) {
   width: nth($sprite, 5);
 }
 
 @mixin sprite-height($sprite) {
-  height: nth($sprite, 6);
+  height: nth($sprite, 6) + 2px;
 }
 
 @mixin sprite-position($sprite) {
-  $sprite-offset-x: nth($sprite, 3);
-  $sprite-offset-y: nth($sprite, 4);
+  $x:nth($sprite, 5) - nth($sprite, 7);
+  $y:nth($sprite, 6) - nth($sprite, 8);
+  $o-sprite-offset-x: strip-unit(nth($sprite, 3)) / strip-unit( $x );
+  $sprite-offset-x: 0 * 100%;
+  @if type-of($o-sprite-offset-x) == 'number' {
+    $sprite-offset-x: $o-sprite-offset-x * 100%;
+  }
+  $sprite-offset-y: strip-unit(nth($sprite, 4)) / strip-unit( $y ) * 100%;
   background-position: $sprite-offset-x  $sprite-offset-y;
 }
 

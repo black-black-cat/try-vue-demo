@@ -1,0 +1,5 @@
+@import '~bourbon/core/_bourbon';
+
+@mixin imgBg ($name) {
+  background: url('../assets/images/#{$name}') no-repeat;
+}

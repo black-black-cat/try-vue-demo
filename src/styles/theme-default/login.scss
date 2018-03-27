@@ -1,0 +1,26 @@
+@import 'var';
+
+.view-login {
+  background-color: $c13;
+
+  .form {
+    background-color: $c0;
+    box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  }
+  .form-item {
+    >input {
+      border-bottom: solid 1px $c14;
+    }
+  }
+  .form-submit {
+    color: $c0;
+    background-color: $c1;
+    box-shadow: 0 12px 20px rgba($c1,.3);
+  }
+
+  .bottom-logo {
+    .line {
+      background-color: $c14;
+    }
+  }
+}
