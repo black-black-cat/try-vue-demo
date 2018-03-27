@@ -16,7 +16,7 @@ gulp.task('sprite', function () {
   var spriteData = gulp.src(resolve('src/assets/icons/*.png')).pipe(spritesmith({
     imgName: 'sprite.png',
     cssName: 'sprite.scss',
-    imgPath: '../static/sprite.png',
+    imgPath: '../../static/sprite.png',
     padding: 10,
     cssTemplate : resolve('src/styles/scss.template.handlebars')
   }));

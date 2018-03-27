@@ -18,8 +18,8 @@ $bg-btn-code-width: 176px;
 $bg-btn-code-height: 60px;
 $bg-btn-code-total-width: 375px;
 $bg-btn-code-total-height: 156px;
-$bg-btn-code-image: '../static/sprite.png';
-$bg-btn-code: (0px, 96px, 0px, -96px, 176px, 60px, 375px, 156px, '../static/sprite.png', 'bg-btn-code', );
+$bg-btn-code-image: '../../static/sprite.png';
+$bg-btn-code: (0px, 96px, 0px, -96px, 176px, 60px, 375px, 156px, '../../static/sprite.png', 'bg-btn-code', );
 $bg-btn-dialog-name: 'bg-btn-dialog';
 $bg-btn-dialog-x: 0px;
 $bg-btn-dialog-y: 0px;
@@ -29,13 +29,13 @@ $bg-btn-dialog-width: 375px;
 $bg-btn-dialog-height: 86px;
 $bg-btn-dialog-total-width: 375px;
 $bg-btn-dialog-total-height: 156px;
-$bg-btn-dialog-image: '../static/sprite.png';
-$bg-btn-dialog: (0px, 0px, 0px, 0px, 375px, 86px, 375px, 156px, '../static/sprite.png', 'bg-btn-dialog', );
+$bg-btn-dialog-image: '../../static/sprite.png';
+$bg-btn-dialog: (0px, 0px, 0px, 0px, 375px, 86px, 375px, 156px, '../../static/sprite.png', 'bg-btn-dialog', );
 $spritesheet-width: 375px;
 $spritesheet-height: 156px;
-$spritesheet-image: '../static/sprite.png';
+$spritesheet-image: '../../static/sprite.png';
 $spritesheet-sprites: ($bg-btn-code, $bg-btn-dialog, );
-$spritesheet: (375px, 156px, '../static/sprite.png', $spritesheet-sprites, );
+$spritesheet: (375px, 156px, '../../static/sprite.png', $spritesheet-sprites, );
 
 // The provided mixins are intended to be used with the array-like variables
 //
