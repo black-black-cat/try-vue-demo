@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <div class="icon bg-btn-code"></div>
   </div>
 </template>
 
@@ -16,8 +16,12 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../styles/icons';
 $font: 150px;
 body {
   font-size: $font;
+}
+.icon {
+  margin: $font;
 }
 </style>
