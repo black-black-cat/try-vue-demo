@@ -1,5 +1,9 @@
 @import 'var';
 
+html, body {
+  background-color: $c11;
+}
+
 #app {
   color: $c6;
 }

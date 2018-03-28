@@ -1,5 +1,67 @@
 .view-data-analyze {
+  background-color: $c11;
+  .nav {
+    background-color: $c0;
+    border-bottom: solid 1px $c11;
+  }
   .nav-item {
     box-shadow: 0 4px 16px rgba($c6,.3);
+  }
+  .date {
+    background-color: $c0;
+    &-head {
+      .triangle-down {
+        border-top-color:$c8;
+      }
+    }
+    &-body {
+      .btn {
+        background-color: $c11;
+        &.disabled {
+          color: $c15;
+        }
+      }
+      .center {
+        .num {
+          color: $c1;
+        }
+        .time {
+          color: $c7;
+        }
+      }
+    }
+    &-bottom {
+      border-top: solid 1px $c11;
+      .item {
+        .name {
+          color: $c7;
+        }
+        .value {
+          color: $c6;
+        }
+      }
+      .line {
+        border-left: solid 1px $c11;
+      }
+    }
+  }
+  .chart {
+    background-color: $c0;
+    &-tabs {
+      .tab {
+        border: solid 2px $c8;
+        color: $c8;
+        &+.tab {
+          border-left-color: transparent;
+        }
+        &.active {
+          border-color: $c1;
+          color: $c1;
+        }
+        &.border-right-none {
+          border-right-color: transparent;
+        }
+      }
+    }
   }
 }

@@ -13,10 +13,12 @@ export default {
 <style lang="scss">
 @import 'styles/common';
 @import 'styles/theme';
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  font-size: 16px;
 }
 </style>
