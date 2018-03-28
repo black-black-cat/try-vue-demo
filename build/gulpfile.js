@@ -31,7 +31,7 @@ gulp.task('sprite', function () {
   // Pipe CSS stream through CSS optimizer and onto disk
   var cssStream = spriteData.css
     .pipe(csso())
-    .pipe(gulp.dest( resolve('src/styles') ));
+    .pipe(gulp.dest( resolve('src/styles/theme-default') ));
 
   // Return a merged stream to handle both `end` events
   return merge(imgStream, cssStream);

@@ -8,7 +8,8 @@ module.exports = {
     "autoprefixer": { browsers: ['iOS >= 7', 'Android > 4.0.0'] },
     "postcss-pxtorem": {
       rootValue: 75,
-      propList: ["*"]
+      propList: ["*"],
+      selectorBlackList: [/^\.van-/],
     }
   }
 }

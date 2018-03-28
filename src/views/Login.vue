@@ -35,7 +35,7 @@ export default {
     return {}
   },
   mounted () {
-    // this.$indicator.open()
+    // this.$toast('kkk')
   }
 }
 </script>

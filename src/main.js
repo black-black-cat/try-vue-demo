@@ -3,12 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { Indicator, Popup } from 'mint-ui'
+import { Toast } from 'vant'
 
 Vue.config.productionTip = false
-Vue.prototype.$indicator = Indicator
-Vue.use(Popup)
-
+Vue.prototype.$toast = Toast
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
