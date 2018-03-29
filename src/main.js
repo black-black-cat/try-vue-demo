@@ -4,6 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { Toast } from 'vant'
+import calendar from '@/components/calendar'
+
+Vue.use(calendar)
 
 Vue.config.productionTip = false
 Vue.prototype.$toast = Toast

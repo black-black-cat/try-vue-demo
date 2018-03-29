@@ -122,9 +122,9 @@ var theme = {
   },
 
   line: {
-    smooth: true,
+    smooth: false,
     symbol: 'emptyCircle',
-    symbolSize: 3
+    symbolSize: 6
   },
 
   candlestick: {
