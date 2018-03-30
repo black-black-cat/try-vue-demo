@@ -136,7 +136,7 @@ export default {
     week: {
       type: Array,
       default: function() {
-        return ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        return ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
       }
     },
     direction: {
@@ -532,7 +532,8 @@ function getAllDayInMonth(year, month) {
   let allDay = new Array()
   let day = new Date()
   day.setFullYear(year, month - 1, 1)
-  let firstDayInweek = day.getDay() == 0 ? 7 : day.getDay()
+  // let firstDayInweek = day.getDay() == 0 ? 7 : day.getDay()
+  let firstDayInweek = day.getDay() == 0 ? 1 : day.getDay() + 1
   day.setFullYear(year, month, 0)
   let daysCount = day.getDate()
   let start = firstDayInweek - 1
