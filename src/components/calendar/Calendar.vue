@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
-  <div class="modal" :class="{show:open}" @click="handelModalClick">
+  <div class="modal" :class="{show:isOpen}" @click="handelModalClick">
     <transition name="popup-slide-bottom">
-      <div class="calendar" v-show="open" ref="calendar">
+      <div class="calendar" v-show="isOpen" ref="calendar">
         <div class="head">
           <span>选择日期</span>
           <div class="close icon icon-close" @click="close"></div>
@@ -84,9 +84,11 @@
 <script>
 /* eslint-disable */
 import hasClass from 'dom-helpers/class/hasClass'
+import lockScroll from '@/components/mixins/lockScroll'
 
 export default {
   name: 'calendar',
+  mixins: [lockScroll],
   props: {
     value: {
       type: Boolean,
@@ -152,7 +154,7 @@ export default {
   },
   data() {
     return {
-      open: false,
+      isOpen: false,
       dateObj: {
         pre: {},
         current: {},
@@ -186,11 +188,11 @@ export default {
     }
   },
   watch: {
-    open(val) {
+    isOpen(val) {
       this.$emit('input', val)
     },
     value(val) {
-      this.open = val
+      this.isOpen = val
     }
   },
   created() {
@@ -198,7 +200,7 @@ export default {
   },
   mounted() {
     if (this.value) {
-      this.open = true
+      this.isOpen = true
     }
     this.$refs['calendar-touch'].addEventListener(
       'touchstart',
@@ -208,6 +210,9 @@ export default {
       'touchend',
       this.handleTouchEnd
     )
+    // lock scroll
+    this.$el.addEventListener('touchstart', this.onTouchStart)
+    this.$el.addEventListener('touchmove', this.onTouchMove)
   },
   beforeDestroy() {
     this.$refs['calendar-touch'].removeEventListener(
@@ -315,7 +320,7 @@ export default {
     },
     handelModalClick(e) {
       if (this.closeByClickmask && !this.$refs.calendar.contains(e.target)) {
-        this.open = false
+        this.isOpen = false
       }
     },
     // 创建日期
@@ -411,7 +416,7 @@ export default {
       if (!this.isTranslateEnd()) return
       if (col.invalid) return
       this.translateTime = new Date()
-      this.open = false
+      this.isOpen = false
       if (!col.selected) {
         this.removeSelectedDate()
         col.selected = true
@@ -726,7 +731,6 @@ function dateFormat(date, fmt) {
   width: 14.28571429%;
   width: -webkit-calc(100% / 7);
   width: calc(100% / 7);
-  line-height: 20px;
   -webkit-flex-shrink: 1;
   flex-shrink: 1;
   position: relative;

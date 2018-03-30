@@ -6,8 +6,12 @@
   }
   .nav-item {
     box-shadow: 0 4px 16px rgba($c6,.3);
+    .title-sub {
+      color: $c7;
+    }
   }
   .date {
+    border-top: solid 1px $c11;
     background-color: $c0;
     &-head {
       .triangle-down {
@@ -60,6 +64,34 @@
         }
         &.border-right-none {
           border-right-color: transparent;
+        }
+      }
+    }
+  }
+  .m-list {
+    // border-bottom: solid 1px $c11;
+
+    background-color: $c10;
+    &-head {
+      background-color: $c10;
+    }
+    &-content {
+      li {
+        &:nth-child(2n+1) {
+          background-color: $c0;
+        }
+        &:last-child {
+          @include hairline(single, $c11, 0);
+        }
+        .col {
+          >span {
+            &:nth-child(2) {
+              color: $c7;
+            }
+          }
+          &:nth-child(2) {
+            color: $c1;
+          }
         }
       }
     }

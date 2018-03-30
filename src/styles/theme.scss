@@ -1,4 +1,9 @@
 @import 'theme-default/var';
+@import 'mixins';
 @import 'theme-default/app';
 @import 'theme-default/login';
 @import 'theme-default/dataAnalyze';
+
+a {
+  color: $c6;
+}

@@ -1,7 +1,15 @@
 {
-  "prettier.semi": false,
-  "prettier.singleQuote": true,
-  "prettier.disableLanguages": [
-
+  // "prettier.semi": false,
+  // "prettier.singleQuote": true,
+  // "prettier.disableLanguages": [],
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    "html",
+    "vue"
   ]
 }

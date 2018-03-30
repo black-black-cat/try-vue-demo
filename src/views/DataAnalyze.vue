@@ -1,9 +1,18 @@
 <template>
   <div class="container view-data-analyze">
     <div class="nav">
-      <div class="nav-item"></div>
-      <div class="nav-item"></div>
-      <div class="nav-item"></div>
+      <!-- eslint-disable-next-line -->
+      <router-link class="nav-item" v-for="route in nav.items" :to="route.path">
+        <div class="content">
+          <div class="left">
+            <i class="icon" :class="[route.icon]"></i>
+          </div>
+          <div class="right">
+            <div class="title">{{route.name}}</div>
+            <div class="title-sub">掌控最新趋势</div>
+          </div>
+        </div>
+      </router-link>
     </div>
     <div class="date">
       <div class="date-head" @click="showCalendar">
@@ -46,11 +55,26 @@
         <IEcharts :option="lineChart" :theme="chartTheme" />
       </div>
     </div>
+    <div class="m-list">
+      <div class="m-list-head">
+        <div class="item">销售时间</div>
+        <div class="item">销售金额</div>
+        <div class="item">商品数量</div>
+      </div>
+      <ul class="m-list-content">
+        <li v-for="i in 'aaaaa'.split('')">
+          <div class="col">
+            <span>2018-03-15</span>
+            <span>星期四</span>
+          </div>
+          <div class="col">1.33</div>
+          <div class="col">1234</div>
+        </li>
+      </ul>
+    </div>
+    <more></more>
 
-    <calendar v-model="calendar.calendarShow" :defaultDate="calendar.defaultDate" :month="calendar.month" :direction="calendar.direction" @close="hideCalendar">
-
-    </calendar>
-
+    <calendar v-if="calendar.calendarShow" v-model="calendar.calendarShow" :defaultDate="calendar.defaultDate" :month="calendar.month" :direction="calendar.direction" @close="hideCalendar"></calendar>
   </div>
 </template>
 
@@ -64,7 +88,29 @@ export default {
   components: { IEcharts },
 
   data () {
+    console.log(this.$router, this.$route)
+    const routes = this.$router.options.routes
     return {
+      nav: {
+        items: [
+          {
+            ...routes[4],
+            icon: 'icon-nav-a'
+          },
+          {
+            ...routes[5],
+            icon: 'icon-nav-b'
+          },
+          {
+            ...routes[6],
+            icon: 'icon-nav-c'
+          },
+          {
+            ...routes[7],
+            icon: 'icon-nav-d'
+          }
+        ]
+      },
       lineChart: {
         grid: {
           left: '12%',
@@ -122,6 +168,7 @@ export default {
 @import "../styles/theme";
 
 .nav {
+  line-height: 140px;
   padding: 20px 28px 40px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -131,6 +178,7 @@ export default {
     display: inline-block;
     width: 256px;
     height: 140px;
+    line-height: 140px;
     margin: 0 12px;
     font-size: 30px;
     &:first-child {
@@ -138,6 +186,30 @@ export default {
     }
     &:last-child {
       margin-right: 0;
+    }
+
+    .content {
+      display: flex;
+      height: 140px;
+      align-items: center;
+    }
+
+    .left, .right {
+      display: inline-block;
+      vertical-align: center;
+      line-height: 1;
+    }
+    .left {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      @include size(90px);
+    }
+    .right {
+      .title-sub {
+        padding-top: 12px;
+        font-size: 24px;
+      }
     }
   }
 }
@@ -242,6 +314,55 @@ export default {
   &-content {
     height: 500px;
     // margin-top: 70px;
+  }
+}
+
+.m-list {
+  &-head {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    padding: 0 28px;
+    .item {
+      flex-grow: 1;
+      font-size: 24px;
+      &:first-child {
+        text-align: left;
+      }
+      &:last-child {
+        text-align: right;
+      }
+    }
+  }
+  &-content {
+    font-size: 28px;
+    li {
+      display: flex;
+      align-items: center;
+      height: 116px;
+      padding: 0 28px;
+      .col {
+        flex-grow: 1;
+
+        >span {
+          display: block;
+          &:nth-child(2) {
+            padding-top: 8px;
+            font-size: 24px;
+          }
+        }
+
+        &:first-child {
+          flex-grow: 0;
+          text-align: left;
+          width: 33.33%;
+        }
+        &:last-child {
+          text-align: right;
+          transform: translatex(-0.5em);
+        }
+      }
+    }
   }
 }
 </style>

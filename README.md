@@ -6,3 +6,5 @@
 [vant](https://github.com/youzan/vant)
 
 [vue-mobile-calendar](https://github.com/lx544690189/vue-mobile-calendar)
+
+[dom-helpers](https://www.npmjs.com/package/dom-helpers)

@@ -1,11 +1,4 @@
 import Calendar from './Calendar.vue'
+import createPlugin from '../createPlugin'
 
-const install = function (Vue) {
-  Vue.component(Calendar.name, Calendar)
-}
-
-if (typeof window !== 'undefined' && window.Vue) {
-  install(window.Vue)
-};
-
-export default install
+export default createPlugin(Calendar)

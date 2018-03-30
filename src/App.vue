@@ -20,5 +20,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   font-size: 16px;
+  min-height: 100vh;
 }
 </style>
