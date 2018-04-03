@@ -24,6 +24,7 @@ const titles = {
 Vue.use(Router)
 
 const router = new Router({
+  mode: 'history',
   routes: [
     { path: '/', redirect: '/dataAnalyze' },
     { path: '*', component: NotFound },
@@ -59,6 +60,14 @@ const router = new Router({
       meta: {title: titles.TouristTags}
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.path.indexOf('/mobile') > -1) {
+    next(false)
+  } else {
+    next()
+  }
 })
 
 Vue.use(VueDocumentTitlePlugin, router, { defTitle: '数据中心', filter: title => `${title}` })

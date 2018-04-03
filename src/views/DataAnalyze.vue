@@ -62,6 +62,7 @@
         <div class="item">商品数量</div>
       </div>
       <ul class="m-list-content">
+        <!-- eslint-disable-next-line -->
         <li v-for="i in 'aaaaa'.split('')">
           <div class="col">
             <span>2018-03-15</span>
@@ -152,6 +153,15 @@ export default {
     }
   },
 
+  mounted () {
+    this.$api.daySales({
+      pointDate: _.dateFormat(new Date(), 'yyyy-MM-dd')
+    })
+      .then(res => {
+        console.log(res)
+      })
+  },
+
   methods: {
     showCalendar () {
       this.calendar.calendarShow = true
@@ -176,6 +186,7 @@ export default {
   font-size: 0;
   &-item {
     display: inline-block;
+    vertical-align: top;
     width: 256px;
     height: 140px;
     line-height: 140px;

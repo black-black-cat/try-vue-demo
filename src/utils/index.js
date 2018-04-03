@@ -1,5 +1,6 @@
 import each from 'lodash/each'
 import assign from 'lodash/assign'
+import {default as timeFormat, setTimeTemplate} from './timeFormat'
 
 function dateFormat (date, fmt) {
   var o = {
@@ -20,5 +21,7 @@ function dateFormat (date, fmt) {
 export default {
   each,
   assign,
-  dateFormat
+  dateFormat,
+  timeFormat,
+  setTimeTemplate
 }

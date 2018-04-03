@@ -6,12 +6,16 @@ import router from './router'
 import { Toast } from 'vant'
 import calendar from '@/components/calendar'
 import more from '@/components/more'
+import * as api from '@/api'
+import * as bus from '@/store/bus'
 
 Vue.use(calendar)
 Vue.use(more)
 
 Vue.config.productionTip = false
 Vue.prototype.$toast = Toast
+Vue.prototype.$api = api
+Vue.prototype.$bus = bus
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

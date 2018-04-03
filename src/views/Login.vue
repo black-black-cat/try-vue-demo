@@ -6,19 +6,19 @@
       <div class="form-body">
         <div class="form-item">
           <i class="icon login-user"></i>
-          <input type="text" maxlength="12">
+          <input type="text" placeholder="请输入账号" v-model="userName">
         </div>
         <div class="form-item">
           <i class="icon login-password"></i>
-          <input type="password" maxlength="6">
+          <input type="password" placeholder="请输入密码" v-model="password">
         </div>
-        <div class="form-item">
+        <div class="form-item" v-if="false">
           <i class="icon login-vcode"></i>
           <input type="text" maxlength="4">
         </div>
       </div>
       <div class="form-bottom">
-        <div class="form-submit">登录</div>
+        <div class="form-submit" @click="submit">登录</div>
       </div>
     </div>
     <div class="bottom-logo">
@@ -32,10 +32,51 @@
 <script>
 export default {
   data () {
-    return {}
+    return {
+      // isMobilePass: false,
+      // isPwdPass: false,
+      // rMobile: /1[0-9]{10}/,
+      // rPwd: /.{6}/
+      userName: 'otc',
+      password: 'Admin@123'
+    }
   },
   mounted () {
     // this.$toast('kkk')
+  },
+  methods: {
+    submit () {
+      const vm = this
+
+      let {userName, password} = vm.$data
+      if (!userName) {
+        vm.$toast('请输入用户名')
+        return
+      }
+      if (!password) {
+        vm.$toast('请输入密码')
+        return
+      }
+
+      if (vm.$bus.isLock()) {
+        return
+      }
+      vm.$bus.lock()
+      this.$api.login({
+        userName,
+        password
+      }).then((res) => {
+        if (res.type) {
+          vm.$toast(res.message)
+        }
+        vm.$bus.unlock()
+      }).catch((err) => {
+        throw err
+      })
+    },
+    check () {
+
+    }
   }
 }
 </script>
