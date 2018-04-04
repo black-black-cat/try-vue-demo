@@ -1,0 +1,53 @@
+.view-sales {
+  .chart {
+    background-color: $c0;
+    &-tabs {
+      .tab {
+        border: solid 2px $c8;
+        color: $c8;
+        &+.tab {
+          border-left-color: transparent;
+        }
+        &.active {
+          border-color: $c1;
+          color: $c1;
+        }
+        &.border-right-none {
+          border-right-color: transparent;
+        }
+      }
+    }
+  }
+  .m-list-container {
+    .head {
+      background-color: $c0;
+    }
+    .m-list {
+      background-color: $c10;
+      &-head {
+        background-color: $c10;
+      }
+      &-content {
+        li {
+          &:nth-child(2n+1) {
+            background-color: $c0;
+          }
+          &:last-child {
+            @include hairline(single, $c11, 0);
+          }
+          .col {
+            >span {
+              &:nth-child(2) {
+                color: $c7;
+              }
+            }
+            &:nth-child(2) {
+              color: $c1;
+            }
+          }
+        }
+      }
+    }
+  }
+
+}

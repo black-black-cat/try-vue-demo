@@ -2,7 +2,7 @@
   <div class="container view-data-analyze">
     <div class="nav">
       <!-- eslint-disable-next-line -->
-      <router-link class="nav-item" v-for="route in nav.items" :to="route.path">
+      <router-link class="nav-item" v-for="(route, i) in nav.items" :key="i" :to="route.path">
         <div class="content">
           <div class="left">
             <i class="icon" :class="[route.icon]"></i>

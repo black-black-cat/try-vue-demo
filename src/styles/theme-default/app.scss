@@ -7,3 +7,30 @@ html, body {
 #app {
   color: $c6;
 }
+
+.m-sales-list {
+  background-color: $c10;
+  &-head {
+    background-color: $c10;
+  }
+  &-content {
+    li {
+      &:nth-child(2n+1) {
+        background-color: $c0;
+      }
+      &:last-child {
+        @include hairline(single, $c11, 0);
+      }
+      .col {
+        >span {
+          &:nth-child(2) {
+            color: $c7;
+          }
+        }
+        &:nth-child(2) {
+          color: $c1;
+        }
+      }
+    }
+  }
+}

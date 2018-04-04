@@ -1,0 +1,41 @@
+.view-user-portrait {
+  .m-gender {
+    background-color: $c0;
+    .content-text {
+      .left {
+        >span {
+          &:nth-child(2) {
+            color: $c1;
+          }
+        }
+      }
+      .right {
+        >span {
+          &:nth-child(1) {
+            color: $c4;
+          }
+        }
+      }
+    }
+    .content-bar {
+      .left {
+        background-color: $c1;
+      }
+      .right {
+        background-color: $c4;
+      }
+    }
+  }
+
+  .m-age {
+    background-color: $c0;
+  }
+
+  .m-people-counting {
+    background-color: $c0;
+  }
+
+  .m-region {
+    background-color: $c0
+  }
+}

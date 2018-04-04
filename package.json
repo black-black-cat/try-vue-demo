@@ -16,7 +16,7 @@
     "amfe-flexible": "^2.2.1",
     "bourbon": "^5.0.0",
     "dom-helpers": "^3.3.1",
-    "echarts": "^4.0.4",
+    "echarts": "4.0.3",
     "flyio": "^0.4.5",
     "lodash": "^4.17.5",
     "mint-ui": "^2.2.13",
