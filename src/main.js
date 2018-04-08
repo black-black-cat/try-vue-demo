@@ -3,21 +3,25 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { Toast } from 'vant'
+import { Toast, Loading } from 'vant'
 import calendar from '@/components/calendar'
 import more from '@/components/more'
 import title from '@/components/title'
 import * as api from '@/api'
 import * as bus from '@/store/bus'
+import _ from '@/utils'
 
 Vue.use(calendar)
 Vue.use(more)
 Vue.use(title)
+Vue.use(Loading)
 
 Vue.config.productionTip = false
 Vue.prototype.$toast = Toast
 Vue.prototype.$api = api
 Vue.prototype.$bus = bus
+Vue.prototype.$_ = _
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

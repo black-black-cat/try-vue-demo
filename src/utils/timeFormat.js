@@ -30,3 +30,7 @@ export default function dateParse (date) {
 export function setTimeTemplate (myTemp) {
   temp = myTemp
 }
+
+export {
+  _dateParse
+}

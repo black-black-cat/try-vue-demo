@@ -19,7 +19,7 @@ html, body {
         background-color: $c0;
       }
       &:last-child {
-        @include hairline(single, $c11, 0);
+        @include hairline($c11, bottom);
       }
       .col {
         >span {

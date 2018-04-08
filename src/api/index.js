@@ -40,6 +40,7 @@ fly.interceptors.response.use((res) => {
 
 export default fly
 
+// 登录
 export const login = (payload) => {
   return fly.get('/mobile/authority/login.html', payload)
     .then((res) => {
@@ -62,10 +63,37 @@ function getToken () {
   }
 }
 
+// 三日销售数据
 export const daySales = (payload) => {
-  return fly.get('/mobile/realTimeReport/scenicNearbyDaySaleReport.html', payload)
-    .then(res => {
-      console.log(res)
-    })
+  return fly.get('/mobile/realTimeReport/scenicNearbyDaySaleAndUsedReport.html', payload)
+    .then(res => res)
+    .catch(err => err)
+}
+
+// 销售趋势
+export const scenicSaleRankReport = (payload) => {
+  return fly.get('/mobile/realTimeReport/scenicSaleRankReport.html', payload)
+    .then(res => res)
+    .catch(err => err)
+}
+
+// 游客性别比例
+export const userSexAccountingReport = () => {
+  return fly.get('/mobile/periodReport/userSexAccountingReport.html')
+    .then(res => res)
+    .catch(err => err)
+}
+
+// 游客年龄比例
+export const userAgeBuyNumReport = () => {
+  return fly.get('/mobile/periodReport/userAgeBuyNumReport.html')
+    .then(res => res)
+    .catch(err => err)
+}
+
+// 景区地域购票分析
+export const userAreaBuyNumReport = () => {
+  return fly.get('/mobile/periodReport/userAreaBuyNumReport.html')
+    .then(res => res)
     .catch(err => err)
 }

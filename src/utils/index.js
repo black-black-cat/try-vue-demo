@@ -1,5 +1,8 @@
 import each from 'lodash/each'
 import assign from 'lodash/assign'
+import mapValues from 'lodash/mapValues'
+import map from 'lodash/map'
+import sortBy from 'lodash/sortBy'
 import {default as timeFormat, setTimeTemplate} from './timeFormat'
 
 function dateFormat (date, fmt) {
@@ -21,6 +24,9 @@ function dateFormat (date, fmt) {
 export default {
   each,
   assign,
+  map,
+  mapValues,
+  sortBy,
   dateFormat,
   timeFormat,
   setTimeTemplate

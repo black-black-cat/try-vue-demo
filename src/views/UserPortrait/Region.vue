@@ -15,19 +15,31 @@ import china from 'echarts/map/json/china.json'
 IEcharts.__echarts__.registerTheme('mopon', theme)
 IEcharts.__echarts__.registerMap('china', china)
 
-let cities = convertData([{name: '海门', value: 99},
-  {name: '鄂尔多斯', value: 12},
-  {name: '招远', value: 12},
-  {name: '舟山', value: 12},
-  {name: '齐齐哈尔', value: 14},
-  {name: '盐城', value: 15}])
-console.log(cities)
+// let cities = convertData([{name: '海门', value: 99},
+//   {name: '鄂尔多斯', value: 12},
+//   {name: '招远', value: 12},
+//   {name: '舟山', value: 12},
+//   {name: '齐齐哈尔', value: 14},
+//   {name: '盐城', value: 15}])
+// console.log(cities)
 
 export default {
   components: {
     IEcharts
   },
+  props: {
+    cities: Array
+  },
+  // computed: {
+  //   scaleCities () {
+  //     console.log({name: city.name, value: city.value / 100})
+  //     return this.cities.map(city => { return {name: city.name, value: city.value / 100} })
+  //   }
+  // },
   data () {
+    const vm = this
+    const scaleCities = vm.cities.map(city => { return {name: city.name, value: city.value / 10000} })
+    console.log(scaleCities)
     return {
       chartOption: {
         // backgroundColor: '#404a59',
@@ -70,11 +82,12 @@ export default {
           }
         },
         series: [
+          vm.customColor('#00db9c', scaleCities.slice(0, 1)),
           {
-            name: 'Top 5',
+            name: '',
             type: 'effectScatter',
             coordinateSystem: 'geo',
-            data: cities,
+            data: convertData(scaleCities.slice(1)),
             symbolSize: function (val) {
               return val[2] / 10
             },
@@ -104,6 +117,41 @@ export default {
         ]
       },
       chartTheme: 'mopon'
+    }
+  },
+  methods: {
+    customColor (color, data, name = '') {
+      return {
+        name: name,
+        type: 'effectScatter',
+        coordinateSystem: 'geo',
+        data: convertData(data),
+        symbolSize: function (val) {
+          return val[2] / 10
+        },
+        // showEffectOn: 'render',
+        rippleEffect: {
+          period: 3,
+          scale: 3.2,
+          brushType: 'fill'
+        },
+        // hoverAnimation: true,
+        label: {
+          normal: {
+            formatter: '{b}',
+            position: 'right',
+            show: true
+          }
+        },
+        itemStyle: {
+          normal: {
+            color: color,
+            shadowBlur: 10,
+            shadowColor: '#333'
+          }
+        },
+        zlevel: 1
+      }
     }
   }
 }

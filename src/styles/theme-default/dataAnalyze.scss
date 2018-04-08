@@ -13,6 +13,9 @@
   .date {
     border-top: solid 1px $c11;
     background-color: $c0;
+    .loading-date-point {
+      background-color: rgba($c6, 0.5);
+    }
     &-head {
       .triangle-down {
         border-top-color:$c8;
@@ -81,7 +84,7 @@
           background-color: $c0;
         }
         &:last-child {
-          @include hairline(single, $c11, 0);
+          @include hairline($c11, bottom);
         }
         .col {
           >span {

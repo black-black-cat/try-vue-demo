@@ -15,16 +15,20 @@ export default {
   components: {
     IEcharts
   },
+  props: {
+    pieData: Array
+  },
   data () {
+    const vm = this
     return {
-      pieData: [
-        {value: 335, name: '90后'},
-        {value: 310, name: '80后'},
-        {value: 234, name: '00后'},
-        {value: 135, name: '70后'},
-        {value: 120, name: '60后'}
-      ],
-      pieLegend: ['90后', '80后', '00后', '70后', '60后'],
+      // pieData: [
+      //   {value: 335, name: '90后'},
+      //   {value: 310, name: '80后'},
+      //   {value: 234, name: '00后'},
+      //   {value: 135, name: '70后'},
+      //   {value: 120, name: '60后'}
+      // ],
+      pieLegend: vm.$_.map(vm.pieData, v => v.name),
       chartTheme: 'mopon'
     }
   },
@@ -54,7 +58,6 @@ export default {
             radius: ['32%', '55%'],
             label: {
               formatter: (obj) => {
-                console.log(obj)
                 return `${obj.percent}% \n ${obj.name}`
               }
             },

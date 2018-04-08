@@ -36,6 +36,17 @@
   }
 
   .m-region {
-    background-color: $c0
+    background-color: $c0;
+  }
+
+  .m-city-ratio {
+    background-color: $c0;
+    .m-title {
+      @include hairline($c11, top);
+      border-top: $c11 solid 1px;
+    }
+    .m-city-ratio-list {
+      border-bottom: $c11 solid 1px;
+    }
   }
 }

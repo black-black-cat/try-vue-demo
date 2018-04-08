@@ -11,6 +11,7 @@ import Revisit from '@/views/Revisit'
 import TouristTags from '@/views/TouristTags'
 
 import SalesFullList from '@/views/Sales/FullList'
+import UserPortraitFullList from '@/views/UserPortrait/FullList'
 
 import NotFound from '@/views/NotFound'
 
@@ -23,7 +24,8 @@ const titles = {
   UserPortrait: '用户画像',
   Revisit: '游客重游',
   TouristTags: '游客标签',
-  SalesFullList: '渠道销售排行'
+  SalesFullList: '渠道销售排行',
+  UserPortraitFullList: '地域占比排行'
 }
 
 Vue.use(Router)
@@ -68,6 +70,11 @@ const router = new Router({
       name: titles.SalesFullList,
       component: SalesFullList,
       meta: {title: titles.SalesFullList, needAuth: true}
+    }, {
+      path: '/userPortrait/fullList',
+      name: titles.UserPortraitFullList,
+      component: UserPortraitFullList,
+      meta: {title: titles.UserPortraitFullList, needAuth: true}
     }
   ]
 })
@@ -78,7 +85,7 @@ router.beforeEach((to, from, next) => {
   //     return next({path: '/login'})
   //   }
   // }
-  if (to.path.indexOf('/mobile') > -1) {
+  if (to.path.indexOf('/mobile') > -1 || to.path.indexOf('/static') > -1) {
     next(false)
   } else {
     next()

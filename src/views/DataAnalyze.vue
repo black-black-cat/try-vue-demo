@@ -15,30 +15,33 @@
       </router-link>
     </div>
     <div class="date">
+      <div v-show="loadingDatePoint" class="loading-date-point">
+        <van-loading color="white" />
+      </div>
       <div class="date-head" @click="showCalendar">
-        <span>今日销售 2018年3月20日</span>
+        <span>{{currDate.displayName}}</span>
         <span class="triangle-down"></span>
       </div>
       <div class="date-body">
         <div class="btn left">前一天</div>
         <div class="center">
           <div class="num">
-            <span>23.00</span>
-            <span class="small">万</span>
+            <span>{{currDate.amount}}</span>
+            <!-- <span class="small">万</span> -->
           </div>
-          <div class="time">今日实时 更新时间15:38:16</div>
+          <div v-show="currDate.today" class="time">今日实时 更新时间{{hourFormate()}}</div>
         </div>
         <div class="btn right disabled">后一天</div>
       </div>
       <div class="date-bottom">
         <div class="item">
           <div class="name">销售数量:</div>
-          <div class="value">10826张</div>
+          <div class="value">{{currDate.saleNumber}}张</div>
         </div>
         <div class="line"></div>
         <div class="item">
           <div class="name">入园数量:</div>
-          <div class="value">7694人</div>
+          <div class="value">{{currDate.usedNumber}}人</div>
         </div>
       </div>
     </div>
@@ -46,9 +49,12 @@
       <div class="chart-head">销售趋势</div>
       <div class="chart-tabs">
         <div class="wrapper">
-          <div class="tab border-right-none">7天</div>
-          <div class="tab active">30天</div>
-          <div class="tab">全年</div>
+          <!-- eslint-disable-next-line -->
+          <div class="tab"
+          :class="{active: item.active}"
+          v-for="(item, i) in dateTabs"
+          @click="onDateTagChange(i)"
+          >{{item.name}}</div>
         </div>
       </div>
       <div class="chart-content">
@@ -83,6 +89,7 @@
 import IEcharts from 'vue-echarts-v3/src/full.js'
 import theme from '@/utils/theme.mopon'
 import _ from '@/utils'
+import fecha from 'fecha'
 IEcharts.__echarts__.registerTheme('mopon', theme)
 
 export default {
@@ -112,36 +119,53 @@ export default {
           }
         ]
       },
-      lineChart: {
-        grid: {
-          left: '12%',
-          right: '6%'
-        },
-        tooltip: {
-          trigger: 'axis',
-          position: function (point, params, dom, rect, size) {
-            return [point[0] - size.contentSize[0] / 2, '10%']
-          },
-          formatter: '{b0} {c0}',
-          backgroundColor: '#26a7ff'
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-            type: 'line',
-            areaStyle: {},
-            smooth: false
-          }
-        ]
-      },
+      lineChartX: [],
+      lineChartData: [],
+      dateTabs: [
+        {
+          name: '7天',
+          alias: 'week',
+          active: true
+        }, {
+          name: '月',
+          alias: 'month',
+          active: false
+        }, {
+          name: '年',
+          alias: 'year',
+          active: false
+        }
+      ],
+      // lineChart: {
+      //   grid: {
+      //     left: '12%',
+      //     right: '6%'
+      //   },
+      //   tooltip: {
+      //     trigger: 'axis',
+      //     position: function (point, params, dom, rect, size) {
+      //       return [point[0] - size.contentSize[0] / 2, '10%']
+      //     },
+      //     formatter: '{b0} {c0}',
+      //     backgroundColor: '#26a7ff'
+      //   },
+      //   xAxis: {
+      //     type: 'category',
+      //     boundaryGap: false,
+      //     data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+      //   },
+      //   yAxis: {
+      //     type: 'value'
+      //   },
+      //   series: [
+      //     {
+      //       data: [820, 932, 901, 934, 1290, 1330, 1320],
+      //       type: 'line',
+      //       areaStyle: {},
+      //       smooth: false
+      //     }
+      //   ]
+      // },
       chartTheme: 'mopon',
       calendar: {
         calendarShow: false,
@@ -149,17 +173,93 @@ export default {
         selectedDate: _.dateFormat(new Date(), 'yyyy-MM-dd'),
         month: [ '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月' ],
         direction: 'v'
+      },
+      loadingDatePoint: false,
+      datePoint: null,
+      currDate: {}
+    }
+  },
+
+  computed: {
+    lineChart () {
+      const vm = this
+      return {
+        grid: {
+          left: '12%',
+          right: '6%'
+        },
+        tooltip: {
+          trigger: 'axis',
+          position: function (point, params, dom, rect, size) {
+            let downstairs = 2
+            if (point[0] + size.contentSize[0] / 2 > size.viewSize[0]) {
+              downstairs = 1.5
+            }
+            return [point[0] - size.contentSize[0] / downstairs, '10%']
+          },
+          formatter: objs => {
+            let obj = objs[0]
+            let name = fecha.format(new Date(obj.name), 'YYYY年M月D日')
+            return `${name}<br/>销售额：${obj.value}`
+          },
+          backgroundColor: '#26a7ff'
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: vm.lineChartX,
+          axisLabel: {
+            rotate: 45,
+            formatter: v => v.slice(5)
+          }
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            formatter: (v) => {
+              let label
+              if (v >= 10000) {
+                label = Math.floor(v / 10000) + '万'
+              } else {
+                label = v
+              }
+              return label
+            }
+          }
+        },
+        series: [
+          {
+            data: vm.lineChartData,
+            type: 'line',
+            areaStyle: {},
+            smooth: false
+          }
+        ]
       }
     }
   },
 
   mounted () {
+    const vm = this
+    vm.loadingDatePoint = true
     this.$api.daySales({
       pointDate: _.dateFormat(new Date(), 'yyyy-MM-dd')
     })
       .then(res => {
-        console.log(res)
+        if (res.type) return
+        vm.loadingDatePoint = false
+
+        vm.datePoint = vm.$_.map(res.data, date => {
+          date.timestamp = +new Date(date.pointDate)
+          date.displayName = _.dateFormat(new Date(date.pointDate), 'yyyy年M月d日')
+          return date
+        })
+        vm.datePoint = vm.$_.sortBy(vm.datePoint, ['timestamp'])
+        vm.currDate = vm.datePoint[1]
+        vm.currDate.today = true
       })
+
+    vm.getLineChartDate('week')
   },
 
   methods: {
@@ -168,6 +268,37 @@ export default {
     },
     hideCalendar () {
       this.calendar.calendarShow = false
+    },
+    hourFormate () {
+      return fecha.format(new Date(), 'HH:mm:ss')
+    },
+    onDateTagChange (index) {
+      const vm = this
+      vm.dateTabs.forEach((tag, i) => {
+        if (index === i) {
+          tag.active = true
+          vm.getLineChartDate(tag.alias)
+        } else {
+          tag.active = false
+        }
+      })
+    },
+    getLineChartDate (dateType) {
+      const vm = this
+      this.$api.scenicSaleRankReport({
+        dateType: dateType
+      })
+        .then(res => {
+          if (res.type) return
+          vm.lineChartData = res.data.series
+          vm.lineChartData = vm.$_.map(vm.lineChartData, v => {
+            v.timestamp = +new Date(v.name)
+            return v
+          })
+          vm.lineChartData = vm.$_.sortBy(vm.lineChartData, ['timestamp'])
+          console.log(res)
+          vm.lineChartX = vm.$_.map(vm.lineChartData, v => v.name)
+        })
     }
   }
 }
@@ -226,7 +357,22 @@ export default {
 }
 
 .date {
+  position: relative;
   margin-bottom: 16px;
+  .loading-date-point {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    >div {
+      width: 100px;
+      height: 100px;
+    }
+  }
   &-head {
     display: flex;
     justify-content: center;

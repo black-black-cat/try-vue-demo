@@ -5,10 +5,10 @@
       <div class="content-text">
         <div class="left">
           <span>男</span>
-          <span class="num">68.3%</span>
+          <span class="num">{{male}}</span>
         </div>
         <div class="right">
-          <span class="num">31.7%</span>
+          <span class="num">{{female}}</span>
           <span>女</span>
         </div>
       </div>
@@ -22,6 +22,10 @@
 
 <script>
 export default {
+  props: {
+    male: String,
+    female: String
+  },
   data () {
     return {
 

@@ -4,15 +4,54 @@
   background: url('../assets/images/#{$name}') no-repeat;
 }
 
-@mixin hairline($type, $color, $offset) {
-  @if $type == single {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='1'><rect fill='#{$color}' x='0' y='0' width='100%' height='0.5'/></svg>");
-    background-position: $offset 100%;
+// @mixin hairline($type, $color, $offset) {
+//   @if $type == single {
+//     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='1'><rect fill='#{$color}' x='0' y='0' width='100%' height='0.5'/></svg>");
+//     background-position: $offset 100%;
 
-  } @else if $type == double {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='1'><rect fill='#{$color}' x='0' y='0' width='100%' height='0.5'/></svg>"),
-                      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='1'><rect fill='#{$color}' x='0' y='0' width='100%' height='0.5'/></svg>");
-    background-position: $offset 100%, $offset 0;
+//   } @else if $type == double {
+//     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='1'><rect fill='#{$color}' x='0' y='0' width='100%' height='0.5'/></svg>"),
+//                       url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='1'><rect fill='#{$color}' x='0' y='0' width='100%' height='0.5'/></svg>");
+//     background-position: $offset 100%, $offset 0;
+//   }
+//   background-repeat: no-repeat;
+// }
+
+// https://stackoverflow.com/questions/8640521/can-you-have-a-0-5px-border-on-a-retina-display/25910251#25910251
+@mixin hairline($color, $side: 'top') {
+  position: relative;
+  &:before {
+    content: ' ';
+    display: block;
+    @if $side == 'top' {
+      width: 100%;
+      height: 1px;
+    }
+    @else if $side == 'bottom' {
+      width: 100%;
+      height: 1px;
+    }
+    @else {
+      width: 1px;
+      height: 100%;
+    }
+    position: absolute;
+    #{$side}: 0;
+    left: 0;
+    background-color: $color;
+
+    @for $i from 2 through 4 {
+      @media (-webkit-min-device-pixel-ratio: $i), (min-device-pixel-ratio: $i) {
+      @if $side == 'top' {
+        transform: scaleY(1 / $i);
+      } @else if $side == 'bottom' {
+        transform: scaleY(1 / $i);
+      } @else {
+        transform: scaleX(1 / $i);
+      }
+    }
+    }
+
+
   }
-  background-repeat: no-repeat;
 }
