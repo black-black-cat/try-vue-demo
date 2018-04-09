@@ -9,9 +9,11 @@
 
 [dom-helpers](https://www.npmjs.com/package/dom-helpers)
 
+[fecha](https://www.npmjs.com/package/fecha)
+
 ## http interface
 
-
+http://192.168.25.238:8086/
 
 ### login
 

@@ -181,12 +181,7 @@ export default {
       }
     }
   },
-  computed: {
-    hDirection() {
-      const vm = this
-      return
-    }
-  },
+
   watch: {
     isOpen(val) {
       this.$emit('input', val)
@@ -410,6 +405,11 @@ export default {
     },
     // 日期选择
     handelDayClick(col, index, start, end, ev) {
+      const _ = this.$_
+      // let prevSelected = {
+      //   ...this.selectedDate
+      // }
+      let prevCol = [..._.flatten(this.dateObj.current.allDay_list), ..._.flatten(this.dateObj.pre.allDay_list), ..._.flatten(this.dateObj.next.allDay_list)].filter(item => item.selected)[0]
       if (hasClass(ev.currentTarget, 'grey')) {
         return
       }
@@ -450,7 +450,7 @@ export default {
           this.selectedDate.month - 1,
           this.selectedDate.day
         )
-        this.$emit('change', date, dateFormat(date, this.format))
+        this.$emit('change', date, dateFormat(date, this.format), prevCol, col)
       }
     },
     // 移除已选择日期

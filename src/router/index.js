@@ -10,6 +10,7 @@ import UserPortrait from '@/views/UserPortrait'
 import Revisit from '@/views/Revisit'
 import TouristTags from '@/views/TouristTags'
 
+import SalesTrend from '@/views/SalesTrend'
 import SalesFullList from '@/views/Sales/FullList'
 import UserPortraitFullList from '@/views/UserPortrait/FullList'
 
@@ -20,6 +21,7 @@ import NotFound from '@/views/NotFound'
 const titles = {
   Login: '华侨城集团大数据分析',
   DataAnalyze: '数据分析',
+  SalesTrend: '销售趋势',
   Sales: '渠道销售',
   UserPortrait: '用户画像',
   Revisit: '游客重游',
@@ -46,6 +48,13 @@ const router = new Router({
       component: DataAnalyze,
       meta: {title: titles.DataAnalyze, needAuth: true}
     }, {
+      path: '/dataAnalyze/salesTrend',
+      name: titles.SalesTrend,
+      component: SalesTrend,
+      meta: {title: titles.SalesTrend, needAuth: true}
+    },
+
+    {
       path: '/sales',
       name: titles.Sales,
       component: Sales,

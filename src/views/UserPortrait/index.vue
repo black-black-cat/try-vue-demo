@@ -3,7 +3,7 @@
     <gender :male="gender.male" :female="gender.female"></gender>
     <age :pieData="age"></age>
     <people-counting></people-counting>
-    <region :cities="cities"></region>
+    <region v-if="cities && cities.length" :cities="cities"></region>
     <city-ratio :region="region"></city-ratio>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
   },
   data () {
     return {
-      gender: null,
+      gender: {},
       age: null,
       cities: null,
       region: null

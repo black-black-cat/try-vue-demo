@@ -1,19 +1,19 @@
 <template>
   <div class="m-sales-list">
     <div class="m-sales-list-head">
-      <div class="item">销售时间</div>
+      <div class="item">渠道名称</div>
+      <div class="item">销售占比</div>
       <div class="item">销售金额</div>
-      <div class="item">商品数量</div>
     </div>
     <ul class="m-sales-list-content">
       <!-- eslint-disable-next-line -->
-      <li v-for="i in 'aaaaa'.split('')">
+      <li v-for="(item, i) in details">
         <div class="col">
-          <span>2018-03-15</span>
-          <span>星期四</span>
+          <span>{{i+1}}</span>
+          <span>{{item.channelName}}</span>
         </div>
-        <div class="col">1.33</div>
-        <div class="col">1234</div>
+        <div class="col">{{item.strPercent}}</div>
+        <div class="col">{{item.strAmount}}</div>
       </li>
     </ul>
   </div>
@@ -21,6 +21,9 @@
 
 <script>
 export default {
+  props: {
+    details: Array
+  },
   data () {
     return {}
   }
@@ -58,10 +61,11 @@ export default {
         flex-grow: 1;
 
         >span {
-          display: block;
+          // display: block;
           &:nth-child(2) {
             padding-top: 8px;
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 600;
           }
         }
 

@@ -3,7 +3,7 @@
     <div class="chart-head">销售趋势</div>
 
     <div class="chart-content" ref="chart">
-      <IEcharts v-if="isShow" :option="lineChart" :theme="chartTheme" />
+      <IEcharts v-if="isShow" :option="chartOption" :theme="chartTheme" />
     </div>
   </div>
 </template>
@@ -17,10 +17,14 @@ echarts.registerTheme('mopon', theme)
 
 export default {
   components: { IEcharts },
+  props: {
+    dataGeneral: Array,
+    dataDetail: Array
+  },
   data () {
     return {
       isShow: false,
-      lineChart: {
+      chartOption: {
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -32,7 +36,7 @@ export default {
         // },
         series: [
           {
-            name: '访问来源',
+            name: '销售渠道',
             type: 'pie',
             selectedMode: 'single',
             radius: [0, '30%'],
@@ -47,29 +51,31 @@ export default {
                 show: false
               }
             },
-            data: [
-              {value: 335, name: '直达', selected: true},
-              {value: 679, name: '营销广告'},
-              {value: 1548, name: '搜索引擎'}
-            ]
+            // data: [
+            //   {value: 335, name: '直达', selected: true},
+            //   {value: 679, name: '营销广告'},
+            //   {value: 1548, name: '搜索引擎'}
+            // ]
+            data: this.dataGeneral
           },
           {
-            name: '访问来源',
+            name: '销售渠道',
             type: 'pie',
             radius: ['40%', '55%'],
             label: {
 
             },
-            data: [
-              {value: 335, name: '直达'},
-              {value: 310, name: '邮件营销'},
-              {value: 234, name: '联盟广告'},
-              {value: 135, name: '视频广告'},
-              {value: 1048, name: '百度'},
-              {value: 251, name: '谷歌'},
-              {value: 147, name: '必应'},
-              {value: 102, name: '其他'}
-            ]
+            // data: [
+            //   {value: 335, name: '直达'},
+            //   {value: 310, name: '邮件营销'},
+            //   {value: 234, name: '联盟广告'},
+            //   {value: 135, name: '视频广告'},
+            //   {value: 1048, name: '百度'},
+            //   {value: 251, name: '谷歌'},
+            //   {value: 147, name: '必应'},
+            //   {value: 102, name: '其他'}
+            // ]
+            data: this.dataDetail
           }
         ]
       },
@@ -80,9 +86,6 @@ export default {
     const vm = this
     vm.$nextTick(() => {
       vm.isShow = true
-
-      // let myChart = echarts.init(vm.$refs.chart, 'mopon')
-      // myChart.setOption(vm.lineChart)
     })
   },
   methods: {

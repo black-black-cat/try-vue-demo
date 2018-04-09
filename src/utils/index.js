@@ -3,7 +3,9 @@ import assign from 'lodash/assign'
 import mapValues from 'lodash/mapValues'
 import map from 'lodash/map'
 import sortBy from 'lodash/sortBy'
+import flatten from 'lodash/flatten'
 import {default as timeFormat, setTimeTemplate} from './timeFormat'
+import fecha from 'fecha'
 
 function dateFormat (date, fmt) {
   var o = {
@@ -27,7 +29,19 @@ export default {
   map,
   mapValues,
   sortBy,
+  flatten,
   dateFormat,
   timeFormat,
   setTimeTemplate
+}
+
+let lang = fecha.i18n
+lang.dayNamesShort = ['日', '一', '二', '三', '四', '五', '六']
+lang.dayNames = lang.dayNamesShort.map(short => '星期' + short)
+lang.monthNamesShort = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+lang.monthNames = lang.monthNamesShort.map(short => short + '月')
+lang.amPm = ['上午', '下午']
+
+export {
+  fecha
 }

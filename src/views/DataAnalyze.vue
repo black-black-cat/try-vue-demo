@@ -1,59 +1,62 @@
 <template>
   <div class="container view-data-analyze">
-    <div class="nav">
-      <!-- eslint-disable-next-line -->
-      <router-link class="nav-item" v-for="(route, i) in nav.items" :key="i" :to="route.path">
-        <div class="content">
-          <div class="left">
-            <i class="icon" :class="[route.icon]"></i>
+    <template v-if="!isLite">
+      <div class="nav">
+        <!-- eslint-disable-next-line -->
+        <router-link class="nav-item" v-for="(route, i) in nav.items" :key="i" :to="route.path">
+          <div class="content">
+            <div class="left">
+              <i class="icon" :class="[route.icon]"></i>
+            </div>
+            <div class="right">
+              <div class="title">{{route.name}}</div>
+              <div class="title-sub">掌控最新趋势</div>
+            </div>
           </div>
-          <div class="right">
-            <div class="title">{{route.name}}</div>
-            <div class="title-sub">掌控最新趋势</div>
+        </router-link>
+      </div>
+      <div class="date">
+        <div v-show="loadingDatePoint" class="loading-date-point">
+          <van-loading color="white" />
+        </div>
+        <div class="date-head" @click="showCalendar">
+          <span>{{currDate.displayName}}</span>
+          <span class="triangle-down"></span>
+        </div>
+        <div class="date-body">
+          <div class="btn left" @click="stepDate('prev')">前一天</div>
+          <div class="center">
+            <div class="num">
+              <span>{{currDate.amount}}</span>
+              <!-- <span class="small">万</span> -->
+            </div>
+            <div v-show="currDate.today" class="time">今日实时 更新时间{{hourFormate()}}</div>
+          </div>
+          <div class="btn right" @click="stepDate('next')">后一天</div>
+        </div>
+        <div class="date-bottom">
+          <div class="item">
+            <div class="name">销售数量:</div>
+            <div class="value">{{currDate.saleNumber}}张</div>
+          </div>
+          <div class="line"></div>
+          <div class="item">
+            <div class="name">入园数量:</div>
+            <div class="value">{{currDate.usedNumber}}人</div>
           </div>
         </div>
-      </router-link>
-    </div>
-    <div class="date">
-      <div v-show="loadingDatePoint" class="loading-date-point">
-        <van-loading color="white" />
       </div>
-      <div class="date-head" @click="showCalendar">
-        <span>{{currDate.displayName}}</span>
-        <span class="triangle-down"></span>
-      </div>
-      <div class="date-body">
-        <div class="btn left">前一天</div>
-        <div class="center">
-          <div class="num">
-            <span>{{currDate.amount}}</span>
-            <!-- <span class="small">万</span> -->
-          </div>
-          <div v-show="currDate.today" class="time">今日实时 更新时间{{hourFormate()}}</div>
-        </div>
-        <div class="btn right disabled">后一天</div>
-      </div>
-      <div class="date-bottom">
-        <div class="item">
-          <div class="name">销售数量:</div>
-          <div class="value">{{currDate.saleNumber}}张</div>
-        </div>
-        <div class="line"></div>
-        <div class="item">
-          <div class="name">入园数量:</div>
-          <div class="value">{{currDate.usedNumber}}人</div>
-        </div>
-      </div>
-    </div>
+    </template>
+
     <div class="chart">
-      <div class="chart-head">销售趋势</div>
+      <div class="chart-head" v-if="!isLite">销售趋势</div>
       <div class="chart-tabs">
         <div class="wrapper">
           <!-- eslint-disable-next-line -->
           <div class="tab"
-          :class="{active: item.active}"
+          :class="{active: item.active, br0: item.br0}"
           v-for="(item, i) in dateTabs"
-          @click="onDateTagChange(i)"
+          @click="onDateTabChange(i)"
           >{{item.name}}</div>
         </div>
       </div>
@@ -69,32 +72,37 @@
       </div>
       <ul class="m-list-content">
         <!-- eslint-disable-next-line -->
-        <li v-for="i in 'aaaaa'.split('')">
+        <li v-for="item in saleRankDetailsCutted">
           <div class="col">
-            <span>2018-03-15</span>
-            <span>星期四</span>
+            <span>{{item.timeFlag}}</span>
+            <span>{{item.weekDay}}</span>
           </div>
-          <div class="col">1.33</div>
-          <div class="col">1234</div>
+          <div class="col">{{item.saleAmount}}</div>
+          <div class="col">{{item.saleNum}}</div>
         </li>
       </ul>
     </div>
-    <more></more>
-
-    <calendar v-if="calendar.calendarShow" v-model="calendar.calendarShow" :defaultDate="calendar.defaultDate" :month="calendar.month" :direction="calendar.direction" @close="hideCalendar"></calendar>
+    <template v-if="!isLite">
+      <more target="/dataAnalyze/salesTrend"></more>
+      <calendar v-model="calendar.calendarShow" :defaultDate="calendar.defaultDate" :month="calendar.month" :direction="calendar.direction" @close="hideCalendar" @change="onCalendarChange"></calendar>
+    </template>
   </div>
 </template>
 
 <script>
 import IEcharts from 'vue-echarts-v3/src/full.js'
 import theme from '@/utils/theme.mopon'
-import _ from '@/utils'
-import fecha from 'fecha'
+import {fecha, default as _} from '@/utils'
 IEcharts.__echarts__.registerTheme('mopon', theme)
 
 export default {
   components: { IEcharts },
-
+  props: {
+    isLite: {
+      type: Boolean,
+      default: false
+    }
+  },
   data () {
     console.log(this.$router, this.$route)
     const routes = this.$router.options.routes
@@ -136,36 +144,6 @@ export default {
           active: false
         }
       ],
-      // lineChart: {
-      //   grid: {
-      //     left: '12%',
-      //     right: '6%'
-      //   },
-      //   tooltip: {
-      //     trigger: 'axis',
-      //     position: function (point, params, dom, rect, size) {
-      //       return [point[0] - size.contentSize[0] / 2, '10%']
-      //     },
-      //     formatter: '{b0} {c0}',
-      //     backgroundColor: '#26a7ff'
-      //   },
-      //   xAxis: {
-      //     type: 'category',
-      //     boundaryGap: false,
-      //     data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-      //   },
-      //   yAxis: {
-      //     type: 'value'
-      //   },
-      //   series: [
-      //     {
-      //       data: [820, 932, 901, 934, 1290, 1330, 1320],
-      //       type: 'line',
-      //       areaStyle: {},
-      //       smooth: false
-      //     }
-      //   ]
-      // },
       chartTheme: 'mopon',
       calendar: {
         calendarShow: false,
@@ -176,7 +154,8 @@ export default {
       },
       loadingDatePoint: false,
       datePoint: null,
-      currDate: {}
+      currDate: {},
+      saleRankDetails: []
     }
   },
 
@@ -236,29 +215,16 @@ export default {
           }
         ]
       }
+    },
+    saleRankDetailsCutted () {
+      let details = this.saleRankDetails
+      return this.isLite ? details : details.slice(0, 5)
     }
   },
 
   mounted () {
     const vm = this
-    vm.loadingDatePoint = true
-    this.$api.daySales({
-      pointDate: _.dateFormat(new Date(), 'yyyy-MM-dd')
-    })
-      .then(res => {
-        if (res.type) return
-        vm.loadingDatePoint = false
-
-        vm.datePoint = vm.$_.map(res.data, date => {
-          date.timestamp = +new Date(date.pointDate)
-          date.displayName = _.dateFormat(new Date(date.pointDate), 'yyyy年M月d日')
-          return date
-        })
-        vm.datePoint = vm.$_.sortBy(vm.datePoint, ['timestamp'])
-        vm.currDate = vm.datePoint[1]
-        vm.currDate.today = true
-      })
-
+    !vm.isLite && vm.getDateSales()
     vm.getLineChartDate('week')
   },
 
@@ -272,7 +238,7 @@ export default {
     hourFormate () {
       return fecha.format(new Date(), 'HH:mm:ss')
     },
-    onDateTagChange (index) {
+    onDateTabChange (index) {
       const vm = this
       vm.dateTabs.forEach((tag, i) => {
         if (index === i) {
@@ -281,24 +247,79 @@ export default {
         } else {
           tag.active = false
         }
+        if (i === index - 1) {
+          tag.br0 = true
+        } else {
+          tag.br0 = false
+        }
       })
+    },
+    getDateSales (strDate) {
+      const vm = this
+      let day = strDate ? new Date(strDate) : new Date()
+      vm.loadingDatePoint = true
+      return vm.$api.daySales({
+        pointDate: _.dateFormat(day, 'yyyy-MM-dd')
+      })
+        .then(res => {
+          vm.loadingDatePoint = false
+          if (res.type) {
+            vm.$toast(res.message)
+            let excess = true
+            return excess
+          }
+
+          vm.datePoint = vm.$_.map(res.data, date => {
+            date.timestamp = +new Date(date.pointDate)
+            date.displayName = _.dateFormat(new Date(date.pointDate), 'yyyy年M月d日')
+            return date
+          })
+          vm.datePoint = vm.$_.sortBy(vm.datePoint, ['timestamp'])
+          vm.currDate = vm.datePoint[1]
+          vm.currDate.today = true
+        })
     },
     getLineChartDate (dateType) {
       const vm = this
+      const _ = vm.$_
       this.$api.scenicSaleRankReport({
         dateType: dateType
       })
         .then(res => {
           if (res.type) return
           vm.lineChartData = res.data.series
-          vm.lineChartData = vm.$_.map(vm.lineChartData, v => {
+          vm.lineChartData = _.map(vm.lineChartData, v => {
             v.timestamp = +new Date(v.name)
             return v
           })
-          vm.lineChartData = vm.$_.sortBy(vm.lineChartData, ['timestamp'])
+          vm.lineChartData = _.sortBy(vm.lineChartData, ['timestamp'])
           console.log(res)
-          vm.lineChartX = vm.$_.map(vm.lineChartData, v => v.name)
+          vm.lineChartX = _.map(vm.lineChartData, v => v.name)
+
+          vm.saleRankDetails = res.data.details
+          _.each(vm.saleRankDetails, item => {
+            item.weekDay = fecha.format(new Date(item.timeFlag), 'dddd')
+          })
         })
+    },
+    onCalendarChange (date, formattedDate, prevCol, col) {
+      this.getDateSales(formattedDate)
+        .then(excess => {
+          if (excess) {
+            prevCol.selected = true
+            col.selected = false
+          }
+        })
+    },
+    stepDate (act) {
+      const vm = this
+      let MS_DAY = 1000 * 60 * 60 * 24
+      let msOffset = act === 'next' ? MS_DAY : -MS_DAY
+      console.log(vm.currDate)
+      let pointDate = vm.currDate.pointDate
+      let msCurr = +new Date(pointDate)
+      let target = fecha.format(new Date(msCurr + msOffset), 'YYYY-MM-DD')
+      vm.getDateSales(target)
     }
   }
 }
@@ -465,6 +486,9 @@ export default {
       }
       &:last-child {
         border-radius: 0 68px 68px 0;
+      }
+      &.br0 {
+        border-right-width: 0;
       }
     }
   }

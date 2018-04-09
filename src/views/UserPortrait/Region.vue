@@ -28,7 +28,12 @@ export default {
     IEcharts
   },
   props: {
-    cities: Array
+    cities: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    }
   },
   // computed: {
   //   scaleCities () {
@@ -38,8 +43,7 @@ export default {
   // },
   data () {
     const vm = this
-    const scaleCities = vm.cities.map(city => { return {name: city.name, value: city.value / 10000} })
-    console.log(scaleCities)
+    const scaleCities = (vm.cities || []).map(city => { return {name: city.name, value: city.value / 10000} })
     return {
       chartOption: {
         // backgroundColor: '#404a59',

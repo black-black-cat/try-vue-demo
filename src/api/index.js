@@ -97,3 +97,17 @@ export const userAreaBuyNumReport = () => {
     .then(res => res)
     .catch(err => err)
 }
+
+// 渠道销售
+export const channelSalRankReportForLineChart = (payload) => {
+  return fly.get('/mobile/realTimeReport/channelSalRankReportForLineChart.html', payload)
+    .then(res => res)
+    .catch(err => err)
+}
+
+// 渠道销售趋势
+export const channelSalRankReportForPieChart = (payload) => {
+  return fly.get('/mobile/realTimeReport/channelSalRankReportForPieChart.html', payload)
+    .then(res => res)
+    .catch(err => err)
+}

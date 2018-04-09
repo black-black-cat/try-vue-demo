@@ -1,18 +1,24 @@
 <template>
   <div>
-    <sales-list />
+    <sales-list v-if="details && details.length" :details="details"/>
   </div>
 </template>
 
 <script>
 import SalesList from '../SalesList'
+import bus from '@/store/bus'
 
 export default {
   components: {
     SalesList
   },
   data () {
-    return {}
+    return {
+      details: []
+    }
+  },
+  mounted () {
+    bus.$emit('Sales.FullList.mounted', this)
   }
 }
 </script>
