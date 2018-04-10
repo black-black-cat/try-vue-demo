@@ -10,7 +10,7 @@
             </div>
             <div class="right">
               <div class="title">{{route.name}}</div>
-              <div class="title-sub">掌控最新趋势</div>
+              <div class="title-sub">{{route.nameSub}}</div>
             </div>
           </div>
         </router-link>
@@ -104,31 +104,35 @@ export default {
     }
   },
   data () {
-    console.log(this.$router, this.$route)
     const routes = this.$router.options.routes
     return {
       nav: {
         items: [
           {
-            ...routes[4],
-            icon: 'icon-nav-a'
-          },
-          {
             ...routes[5],
-            icon: 'icon-nav-b'
+            icon: 'icon-nav-a',
+            nameSub: '掌控最新趋势'
           },
           {
             ...routes[6],
-            icon: 'icon-nav-c'
+            icon: 'icon-nav-b',
+            nameSub: '查阅用户行为'
           },
           {
             ...routes[7],
-            icon: 'icon-nav-d'
+            icon: 'icon-nav-c',
+            nameSub: '定位二次游览'
+          },
+          {
+            ...routes[8],
+            icon: 'icon-nav-d',
+            nameSub: '掌控最新趋势'
           }
         ]
       },
       lineChartX: [],
       lineChartData: [],
+      lineChartColor: '#26a7ff',
       dateTabs: [
         {
           name: '7天',
@@ -210,8 +214,17 @@ export default {
           {
             data: vm.lineChartData,
             type: 'line',
-            areaStyle: {},
-            smooth: false
+            smooth: false,
+            lineStyle: {
+              color: vm.lineChartColor
+            },
+            itemStyle: {
+              color: vm.lineChartColor
+            },
+            areaStyle: {
+              color: vm.lineChartColor,
+              opacity: 0.5
+            }
           }
         ]
       }
@@ -293,7 +306,6 @@ export default {
             return v
           })
           vm.lineChartData = _.sortBy(vm.lineChartData, ['timestamp'])
-          console.log(res)
           vm.lineChartX = _.map(vm.lineChartData, v => v.name)
 
           vm.saleRankDetails = res.data.details
@@ -315,7 +327,6 @@ export default {
       const vm = this
       let MS_DAY = 1000 * 60 * 60 * 24
       let msOffset = act === 'next' ? MS_DAY : -MS_DAY
-      console.log(vm.currDate)
       let pointDate = vm.currDate.pointDate
       let msCurr = +new Date(pointDate)
       let target = fecha.format(new Date(msCurr + msOffset), 'YYYY-MM-DD')

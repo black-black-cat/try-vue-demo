@@ -111,3 +111,10 @@ export const channelSalRankReportForPieChart = (payload) => {
     .then(res => res)
     .catch(err => err)
 }
+
+// 重游比例
+export const userReLabelStatisticsReport = (payload) => {
+  return fly.get('/mobile/periodReport/userReLabelStatisticsReport.html', payload)
+    .then(res => res)
+    .catch(err => err)
+}

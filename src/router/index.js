@@ -23,7 +23,7 @@ const titles = {
   DataAnalyze: '数据分析',
   SalesTrend: '销售趋势',
   Sales: '渠道销售',
-  UserPortrait: '用户画像',
+  UserPortrait: '游客画像',
   Revisit: '游客重游',
   TouristTags: '游客标签',
   SalesFullList: '渠道销售排行',

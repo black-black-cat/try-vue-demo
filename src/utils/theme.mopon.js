@@ -1,6 +1,6 @@
 var colorPalette = [
-  '#26a7ff',
   '#00db9c',
+  '#26a7ff',
   '#f1d412',
   '#26baff',
   '#26cfff',
