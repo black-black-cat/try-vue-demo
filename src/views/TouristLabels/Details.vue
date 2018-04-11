@@ -1,20 +1,20 @@
 <template>
-  <div class="container m-list-container">
+  <div class="m-details container">
     <div class="head">
-      <section-title>重游明细</section-title>
+      <section-title>游客明细</section-title>
     </div>
 
-    <revisit-list :details="detailsCutted"></revisit-list>
-    <more v-if="details && details.length > 5" :target="'/revisit/fullList'"></more>
+    <my-list :details="detailsCutted"></my-list>
+    <more v-if="details && details.length > 5" :target="'/touristLabels/fullList'"></more>
   </div>
 </template>
 
 <script>
-import RevisitList from './RevisitList'
+import myList from './TouristList'
 
 export default {
   components: {
-    RevisitList
+    myList
   },
   props: {
     details: Array
@@ -31,7 +31,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../styles/mixins";
 @import "../../styles/theme";
 .container {
   margin: 16px 0 0;

@@ -118,3 +118,24 @@ export const userReLabelStatisticsReport = (payload) => {
     .then(res => res)
     .catch(err => err)
 }
+
+// 重游明细
+export const userReLabelDetailReport = (payload) => {
+  return fly.get('/mobile/periodReport/userReLabelDetailReport.html', payload)
+    .then(res => res)
+    .catch(err => err)
+}
+
+// 游客标签之人群占比
+export const userLabelStatisticsReportForPieChart = () => {
+  return fly.get('/mobile/periodReport/userLabelStatisticsReportForPieChart.html')
+    .then(res => res)
+    .catch(err => err)
+}
+
+// 游客标签之游客记录
+export const userLabelUsedDetail = (payload) => {
+  return fly.get('/mobile/periodReport/userLabelUsedDetail.html', payload)
+    .then(res => res)
+    .catch(err => err)
+}

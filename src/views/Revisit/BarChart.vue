@@ -32,23 +32,23 @@ export default {
   computed: {
     chartOption () {
       const vm = this
-      const labelOption = {
-        normal: {
-          show: true,
-          // position: app.config.position,
-          // distance: app.config.distance,
-          // align: app.config.align,
-          // verticalAlign: app.config.verticalAlign,
-          // rotate: app.config.rotate,
-          formatter: '{c}  {name|{a}}',
-          fontSize: 16,
-          rich: {
-            name: {
-              textBorderColor: '#fff'
-            }
-          }
-        }
-      }
+      // const labelOption = {
+      //   normal: {
+      //     show: true,
+      //     // position: app.config.position,
+      //     // distance: app.config.distance,
+      //     // align: app.config.align,
+      //     // verticalAlign: app.config.verticalAlign,
+      //     // rotate: app.config.rotate,
+      //     formatter: '{c}  {name|{a}}',
+      //     fontSize: 16,
+      //     rich: {
+      //       name: {
+      //         textBorderColor: '#fff'
+      //       }
+      //     }
+      //   }
+      // }
       return {
         // color: ['#003366', '#006699', '#4cabce', '#e5323e'],
         grid: {

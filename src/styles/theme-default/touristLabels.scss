@@ -1,0 +1,48 @@
+%base-list {
+  .m-tourist-list {
+    background-color: $c10;
+    &-head {
+      background-color: $c10;
+    }
+    &-content {
+      li {
+        &:nth-child(2n+1) {
+          background-color: $c0;
+        }
+        &:last-child {
+          @include hairline($c11, bottom);
+        }
+        .col {
+          >span {
+            &:nth-child(2) {
+              color: $c7;
+            }
+          }
+          &:nth-child(2) {
+            color: $c1;
+          }
+          &:nth-child(3),&:nth-child(4) {
+            color: $c7;
+          }
+        }
+      }
+    }
+  }
+}
+.view-tourist-labels {
+  .m-people-ratio {
+    background-color: $c0;
+  }
+
+  .m-details {
+    background-color:  $c0;
+    @extend %base-list;
+  }
+  .m-tourist-list {
+
+  }
+}
+
+.view-tourist-full-list {
+  @extend %base-list;
+}

@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { Toast, Loading } from 'vant'
+import { Toast, Loading, Popup } from 'vant'
 import calendar from '@/components/calendar'
 import more from '@/components/more'
 import title from '@/components/title'
@@ -15,6 +15,7 @@ Vue.use(calendar)
 Vue.use(more)
 Vue.use(title)
 Vue.use(Loading)
+Vue.use(Popup)
 
 Vue.config.productionTip = false
 Vue.prototype.$toast = Toast

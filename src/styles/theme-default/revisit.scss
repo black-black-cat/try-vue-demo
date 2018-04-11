@@ -1,7 +1,52 @@
+%base-revisit-list {
+  .m-revisit-list {
+    background-color: $c10;
+    &-head {
+      background-color: $c10;
+    }
+    &-content {
+      li {
+        &:nth-child(2n+1) {
+          background-color: $c0;
+        }
+        &:last-child {
+          @include hairline($c11, bottom);
+        }
+        .col {
+          >span {
+            &:nth-child(2) {
+              color: $c7;
+            }
+          }
+          &:nth-child(2) {
+            color: $c1;
+          }
+          &:nth-child(3),&:nth-child(4) {
+            color: $c7;
+          }
+        }
+      }
+    }
+  }
+}
+
 .view-revisit {
+  .nav {
+    background-color: $c0;
+    .triangle {
+      &-down {
+        border-top-color: $c6;
+      }
+      &-left {
+        border-right-color: $c6;
+      }
+      &-right {
+        border-left-color: $c6;
+      }
+    }
+  }
   .m-bar-chart {
     background-color: $c0;
-
     .m-row {
       border-top: 1px solid $c11;
       .name {
@@ -9,4 +54,19 @@
       }
     }
   }
+  .m-list-container {
+    background-color: $c0;
+    .head {
+      background-color: $c0;
+    }
+    @extend %base-revisit-list;
+    .m-revisit-list {
+      border-bottom: 1px solid $c11;
+    }
+  }
+}
+
+.view-revisit-full-list {
+  background-color: $c0;
+  @extend %base-revisit-list;
 }
