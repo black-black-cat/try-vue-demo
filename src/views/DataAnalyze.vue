@@ -84,7 +84,10 @@
     </div>
     <template v-if="!isLite">
       <more target="/dataAnalyze/salesTrend"></more>
-      <calendar v-model="calendar.calendarShow" :defaultDate="calendar.defaultDate" :month="calendar.month" :direction="calendar.direction" @close="hideCalendar" @change="onCalendarChange"></calendar>
+      <calendar v-model="calendar.calendarShow" :defaultDate="calendar.defaultDate" :month="calendar.month" :direction="calendar.direction"
+      @close="hideCalendar" @change="onCalendarChange"
+      ref="calendar"
+      ></calendar>
     </template>
   </div>
 </template>
@@ -270,6 +273,7 @@ export default {
     getDateSales (strDate) {
       const vm = this
       let day = strDate ? new Date(strDate) : new Date()
+
       vm.loadingDatePoint = true
       return vm.$api.daySales({
         pointDate: _.dateFormat(day, 'yyyy-MM-dd')
@@ -290,6 +294,11 @@ export default {
           vm.datePoint = vm.$_.sortBy(vm.datePoint, ['timestamp'])
           vm.currDate = vm.datePoint[1]
           vm.currDate.today = true
+
+          vm.calendar = {
+            ...vm.calendar,
+            defaultDate: day
+          }
         })
     },
     getLineChartDate (dateType) {

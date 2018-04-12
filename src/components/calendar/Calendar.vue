@@ -65,7 +65,7 @@
                   {{ currentViewMonth.month === 12 ? currentViewMonth.year + 1 : currentViewMonth.year }}年{{ currentViewMonth.month === 12 ? month[0] : month[currentViewMonth.month] }}
                 </div>
                 <div class="calendar-month-row" v-for="(row, row_index) in dateObj.next.allDay_list">
-                  <div class="calendar-day" v-for="(col, col_index) in row" @click="handelDayClick(col,row_index*7+col_index,dateObj.next.start,dateObj.next.end, $event)"
+                  <div class="calendar-day" v-for="(col, col_index) in row" @click="handelDayClick(col,row_index*7+col_index,dateObj.next.start,dateObj.next.end, $event, true)"
                     :class="{'grey':row_index*7+col_index<dateObj.next.start || row_index*7+col_index>dateObj.next.end ,'selected':col.selected }">
                     <span :class="{'today':col.isToday,'invalid':col.invalid}">
                       {{ col.value }}
@@ -182,12 +182,28 @@ export default {
     }
   },
 
+  computed: {
+    nextViewMonth () {
+      let curr = this.currentViewMonth
+      let month = curr.month === 12 ? 1 : curr.month + 1
+      let year = curr.month === 12 ? curr.year + 1 : curr.year
+      return {
+        ...curr,
+        year,
+        month
+      }
+    }
+  },
+
   watch: {
     isOpen(val) {
       this.$emit('input', val)
     },
     value(val) {
       this.isOpen = val
+    },
+    defaultDate (val) {
+      this.init()
     }
   },
   created() {
@@ -404,12 +420,17 @@ export default {
       }
     },
     // 日期选择
-    handelDayClick(col, index, start, end, ev) {
+    handelDayClick(col, index, start, end, ev, isNext) {
       const _ = this.$_
       // let prevSelected = {
       //   ...this.selectedDate
       // }
-      let prevCol = [..._.flatten(this.dateObj.current.allDay_list), ..._.flatten(this.dateObj.pre.allDay_list), ..._.flatten(this.dateObj.next.allDay_list)].filter(item => item.selected)[0]
+      let viewMonth = isNext ? this.nextViewMonth : this.currentViewMonth
+      let prevCol = [
+        ..._.flatten(this.dateObj.pre.allDay_list),
+        ..._.flatten(this.dateObj.current.allDay_list),
+        ..._.flatten(this.dateObj.next.allDay_list)
+      ].filter(item => item.selected)[0]
       if (hasClass(ev.currentTarget, 'grey')) {
         return
       }
@@ -423,27 +444,27 @@ export default {
         this.selectedDate.day = col.value
         if (index + 1 <= start) {
           this.selectedDate.month =
-            this.currentViewMonth.month == 1
+            viewMonth.month == 1
               ? 12
-              : this.currentViewMonth.month - 1
+              : viewMonth.month - 1
           this.selectedDate.year =
-            this.currentViewMonth.month == 1
-              ? this.currentViewMonth.year - 1
-              : this.currentViewMonth.year
+            viewMonth.month == 1
+              ? viewMonth.year - 1
+              : viewMonth.year
           this.handelMonthClick('pre', false)
         } else if (index > end) {
           this.selectedDate.month =
-            this.currentViewMonth.month == 12
+            viewMonth.month == 12
               ? 1
-              : this.currentViewMonth.month + 1
+              : viewMonth.month + 1
           this.selectedDate.year =
-            this.currentViewMonth.month == 12
-              ? this.currentViewMonth.year + 1
-              : this.currentViewMonth.year
+            viewMonth.month == 12
+              ? viewMonth.year + 1
+              : viewMonth.year
           this.handelMonthClick('next', false)
         } else {
-          this.selectedDate.month = this.currentViewMonth.month
-          this.selectedDate.year = this.currentViewMonth.year
+          this.selectedDate.month = viewMonth.month
+          this.selectedDate.year = viewMonth.year
         }
         let date = new Date(
           this.selectedDate.year,
