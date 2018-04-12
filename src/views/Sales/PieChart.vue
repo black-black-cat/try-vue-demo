@@ -26,8 +26,9 @@ export default {
       isShow: false,
       chartOption: {
         tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)'
+          // trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)',
+          extraCssText: 'text-align: left;'
         },
         // legend: {
         //   orient: 'vertical',
@@ -36,7 +37,7 @@ export default {
         // },
         series: [
           {
-            name: '销售渠道',
+            name: '自有渠道 vs 第三方渠道',
             type: 'pie',
             selectedMode: 'single',
             radius: [0, '30%'],

@@ -31,7 +31,7 @@ var theme = {
   },
 
   tooltip: {
-    backgroundColor: 'rgba(50,50,50,0.5)',
+    backgroundColor: 'rgba(50,50,50,0.7)',
     axisPointer: {
       type: 'line',
       lineStyle: {
@@ -42,7 +42,8 @@ var theme = {
       },
       shadowStyle: {
         color: 'rgba(200,200,200,0.2)'
-      }
+      },
+      extraCssText: 'text-align: left;'
     }
   },
 

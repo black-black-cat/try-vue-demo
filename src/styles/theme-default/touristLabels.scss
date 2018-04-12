@@ -39,7 +39,24 @@
     @extend %base-list;
   }
   .m-tourist-list {
+    .list {
+      .head {
+        background-color: $c11;
+      }
+      .item {
+        border-bottom: 1px solid $c11;
+        .highlight {
+          color: $c1;
+        }
+      }
+    }
+  }
 
+  .m-tourist-record {
+    background-color: $c0;
+    .list {
+
+    }
   }
 }
 

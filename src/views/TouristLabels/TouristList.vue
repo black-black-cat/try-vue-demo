@@ -16,20 +16,34 @@
         <div class="col">{{item.amount}}</div>
       </li>
     </ul>
-    <van-popup v-model="popupShow">{{itemData}}</van-popup>
+    <van-popup v-model="popupShow">
+      <tourist-record :name="tourist.name"
+      :label="tourist.label" :details="itemData"
+      @close="closePopup"
+      ></tourist-record>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import closest from 'dom-helpers/query/closest'
+import TouristRecord from './TouristRecord'
+
 export default {
+  components: {
+    TouristRecord
+  },
   props: {
     details: Array
   },
   data () {
     return {
       popupShow: false,
-      itemData: null
+      itemData: null,
+      tourist: {
+        name: '',
+        label: ''
+      }
     }
   },
   methods: {
@@ -37,13 +51,21 @@ export default {
       const vm = this
       let target = ev.target
       let elem = closest(target, 'li')
-      console.log(this.details[elem.dataset.index].userName)
-      this.$api.userLabelUsedDetail({userName: this.details[elem.dataset.index].userName})
+      // console.log(this.details[elem.dataset.index].userName)
+      let user = this.details[elem.dataset.index] || {}
+      this.$api.userLabelUsedDetail({userName: user.userName})
         .then(res => {
           if (res.type) return
           vm.itemData = res.data
+          vm.tourist = {
+            name: user.userName,
+            label: user.labelName
+          }
           vm.popupShow = true
         })
+    },
+    closePopup () {
+      this.popupShow = false
     }
   }
 }
@@ -107,5 +129,11 @@ export default {
       }
     }
   }
+}
+</style>
+
+<style>
+.van-popup {
+  background-color: transparent;
 }
 </style>

@@ -33,7 +33,9 @@ export default {
           formatter: '{b}: {c} ({d}%)'
         },
         legend: {
-          bottom: 0,
+          width: 260,
+          // orient: 'vertical',
+          bottom: 2,
           padding: [0, 70, 0, 70],
           data: vm.pieLegendCustomed
         },
