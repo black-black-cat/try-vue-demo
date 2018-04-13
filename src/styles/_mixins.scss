@@ -18,7 +18,7 @@
 // }
 
 // https://stackoverflow.com/questions/8640521/can-you-have-a-0-5px-border-on-a-retina-display/25910251#25910251
-@mixin hairline($color, $side: 'top') {
+@mixin hairline($color, $side: 'top', $retina: false) {
   position: relative;
   &:before {
     content: ' ';
@@ -26,32 +26,39 @@
     @if $side == 'top' {
       width: 100%;
       height: 1px;
+      #{$side}: 0;
+      left: 0;
     }
     @else if $side == 'bottom' {
       width: 100%;
       height: 1px;
+      #{$side}: 0;
+      left: 0;
     }
     @else {
       width: 1px;
       height: 100%;
+      top: 0;
+      #{$side}: 0;
     }
     position: absolute;
-    #{$side}: 0;
-    left: 0;
+
+    // left: 0;
     background-color: $color;
 
-    @for $i from 2 through 4 {
-      @media (-webkit-min-device-pixel-ratio: $i), (min-device-pixel-ratio: $i) {
-      @if $side == 'top' {
-        transform: scaleY(1 / $i);
-      } @else if $side == 'bottom' {
-        transform: scaleY(1 / $i);
-      } @else {
-        transform: scaleX(1 / $i);
+    @if $retina {
+      @for $i from 2 through 4 {
+        @media (-webkit-min-device-pixel-ratio: $i), (min-device-pixel-ratio: $i) {
+        @if $side == 'top' {
+          transform: scaleY(1 / $i);
+        } @else if $side == 'bottom' {
+          transform: scaleY(1 / $i);
+        } @else {
+          transform: scaleX(1 / $i);
+        }
+      }
       }
     }
-    }
-
 
   }
 }

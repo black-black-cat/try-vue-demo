@@ -37,6 +37,22 @@
 
   .m-region {
     background-color: $c0;
+    .chart-tabs {
+      .tab {
+        border: solid 2px $c8;
+        color: $c8;
+        &+.tab {
+          border-left-color: transparent;
+        }
+        &.active {
+          border-color: $c1;
+          color: $c1;
+        }
+        &.border-right-none {
+          border-right-color: transparent;
+        }
+      }
+    }
   }
 
   .m-city-ratio {

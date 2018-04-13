@@ -64,6 +64,9 @@ export default {
             return {
               name: k,
               type: 'line',
+              symbol: 'circle',
+              showSymbol: false,
+              smooth: true,
               data: _.map(sorted, item => {
                 if (xAxisData.indexOf(item.name) === -1) {
                   xAxisData.push(item.name)
@@ -89,7 +92,6 @@ export default {
         .then(res => {
           if (res.type) return
           let data = res.data || {}
-          console.log(res)
           vm.pieChart.dataGeneral = [
             {
               name: '自有渠道',

@@ -1,6 +1,6 @@
 <template>
   <div class="chart m-line-chart">
-    <div class="chart-head">销售趋势</div>
+    <div class="chart-head">渠道销售趋势（TOP3）</div>
     <div class="chart-tabs">
       <div class="wrapper">
         <!-- eslint-disable-next-line -->
@@ -79,6 +79,7 @@ export default {
       const _ = vm.$_
       let lineChartBase = {
         grid: {
+          top: 40,
           left: '12%',
           right: '6%'
         },
@@ -105,7 +106,9 @@ export default {
           backgroundColor: '#26a7ff'
         },
         legend: {
-          data: [],
+          data: [{
+            icon: 'circle'
+          }],
           bottom: 0
         },
         xAxis: {

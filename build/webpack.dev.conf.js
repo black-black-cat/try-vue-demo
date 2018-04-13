@@ -43,9 +43,9 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
-    proxy: {
-      "/mobile": "http://192.168.25.238:8086"
-    }
+    // proxy: {
+    //   "/mobile": "http://192.168.25.238:8086"
+    // }
   },
   plugins: [
     new webpack.DefinePlugin({

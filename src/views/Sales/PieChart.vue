@@ -1,9 +1,15 @@
 <template>
-  <div class="chart m-line-chart">
+  <div class="chart m-pie-chart">
     <div class="chart-head">销售趋势</div>
 
     <div class="chart-content" ref="chart">
       <IEcharts v-if="isShow" :option="chartOption" :theme="chartTheme" />
+    </div>
+    <div class="row">
+      <div class="col" v-for="(item, i) in [...dataGeneral].reverse()" :key="i">
+        <span class="num">{{item.value}}</span>
+        <span class="name">{{item.name}}销售总额</span>
+      </div>
     </div>
   </div>
 </template>
@@ -30,21 +36,18 @@ export default {
           formatter: '{a} <br/>{b}: {c} ({d}%)',
           extraCssText: 'text-align: left;'
         },
-        // legend: {
-        //   orient: 'vertical',
-        //   x: 'left',
-        //   data: ['直达', '营销广告', '搜索引擎', '邮件营销', '联盟广告', '视频广告', '百度', '谷歌', '必应', '其他']
-        // },
         series: [
           {
             name: '自有渠道 vs 第三方渠道',
             type: 'pie',
             selectedMode: 'single',
             radius: [0, '30%'],
-
             label: {
               normal: {
-                position: 'inner'
+                position: 'inner',
+                formatter: (obj) => {
+                  return `${obj.percent}% \n ${obj.name}`
+                }
               }
             },
             labelLine: {
@@ -64,7 +67,11 @@ export default {
             type: 'pie',
             radius: ['40%', '55%'],
             label: {
-
+              normal: {
+                formatter: (obj) => {
+                  return `${obj.percent}% \n ${obj.name}`
+                }
+              }
             },
             // data: [
             //   {value: 335, name: '直达'},
@@ -131,6 +138,24 @@ export default {
   }
   &-content {
     height: 600px;
+  }
+}
+.row {
+  display: flex;
+  .col {
+    flex-grow: 1;
+    &:first-child {
+      @include hairline($c11, 'right')
+    }
+    .num {
+      display: block;
+      font-size: 34px;
+    }
+    .name {
+      display: block;
+      padding-top: 12px;
+      font-size: 24px;
+    }
   }
 }
 </style>

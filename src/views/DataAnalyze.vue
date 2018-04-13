@@ -1,5 +1,5 @@
 <template>
-  <div class="container view-data-analyze">
+  <div class="container view-data-analyze" @touchstart="onContainerTouch($event)">
     <template v-if="!isLite">
       <div class="nav">
         <!-- eslint-disable-next-line -->
@@ -20,6 +20,7 @@
           <van-loading color="white" />
         </div>
         <div class="date-head" @click="showCalendar">
+          <span>今日销售 </span>
           <span>{{currDate.displayName}}</span>
           <span class="triangle-down"></span>
         </div>
@@ -61,7 +62,7 @@
         </div>
       </div>
       <div class="chart-content">
-        <IEcharts :option="lineChart" :theme="chartTheme" />
+        <IEcharts :option="lineChart" :theme="chartTheme" ref="lineChart"/>
       </div>
     </div>
     <div class="m-list">
@@ -74,11 +75,11 @@
         <!-- eslint-disable-next-line -->
         <li v-for="item in saleRankDetailsCutted">
           <div class="col">
-            <span>{{item.timeFlag}}</span>
+            <span class="bold">{{item.timeFlag}}</span>
             <span>{{item.weekDay}}</span>
           </div>
-          <div class="col">{{item.saleAmount}}</div>
-          <div class="col">{{item.saleNum}}</div>
+          <div class="col bold">{{item.saleAmount}}</div>
+          <div class="col bold">{{item.saleNum}}</div>
         </li>
       </ul>
     </div>
@@ -171,7 +172,9 @@ export default {
       const vm = this
       return {
         grid: {
-          left: '12%',
+          // weight: '30%',
+          top: '16%',
+          left: '20%',
           right: '6%'
         },
         tooltip: {
@@ -195,7 +198,7 @@ export default {
           boundaryGap: false,
           data: vm.lineChartX,
           axisLabel: {
-            rotate: 45,
+            // rotate: 45,
             formatter: v => v.slice(5)
           }
         },
@@ -205,9 +208,9 @@ export default {
             formatter: (v) => {
               let label
               if (v >= 10000) {
-                label = Math.floor(v / 10000) + '万'
+                label = Math.floor(v / 10000) + '万元'
               } else {
-                label = v
+                label = v + '元'
               }
               return label
             }
@@ -218,15 +221,20 @@ export default {
             data: vm.lineChartData,
             type: 'line',
             smooth: false,
+            symbol: 'circle',
+            showAllSymbol: true,
             lineStyle: {
               color: vm.lineChartColor
             },
             itemStyle: {
-              color: vm.lineChartColor
+              color: '#00db9c'
             },
             areaStyle: {
               color: vm.lineChartColor,
-              opacity: 0.5
+              opacity: 0.2
+            },
+            emphasis: {
+              symbol: 'emptyCircle'
             }
           }
         ]
@@ -340,6 +348,14 @@ export default {
       let msCurr = +new Date(pointDate)
       let target = fecha.format(new Date(msCurr + msOffset), 'YYYY-MM-DD')
       vm.getDateSales(target)
+    },
+    onContainerTouch (ev) {
+      const target = ev.target
+      if (!target.closest('.chart-content')) {
+        this.$refs.lineChart.dispatchAction({
+          type: 'hideTip'
+        })
+      }
     }
   }
 }
@@ -420,11 +436,16 @@ export default {
     align-items: center;
     padding-top: 54px;
     font-size: 32px;
+    font-weight: 600;
     .triangle-down {
       display: inline-block;
       margin-top: 4px;
       margin-left: 8px;
       @include triangle("down", 17px, 10px, transparent);
+    }
+    &>span:first-child {
+      display: inline-block;
+      padding-right: .6em;
     }
   }
   &-body {
@@ -508,12 +529,12 @@ export default {
         border-radius: 0 68px 68px 0;
       }
       &.br0 {
-        border-right-width: 0;
+        border-right-color: transparent;
       }
     }
   }
   &-content {
-    height: 500px;
+    height: 400px;
     // margin-top: 70px;
   }
 }

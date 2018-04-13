@@ -11,15 +11,12 @@
         >{{item.name}}</div>
       </div>
     </div>
-    <div v-for="(tab, i) in chartTabs"
-     v-show="tab.active"
-     :key="i"
-     class="chart-content" ref="chartContent">
-      <!-- <IEcharts :option="chartOptionComputed"
+    <div class="chart-content">
+      <IEcharts :option="chartOptionComputed"
       :resizable="true"
       :theme="chartTheme" key="city"
       ref="chart"
-      /> -->
+      />
       <!-- <IEcharts v-show="chartTabs[1].active" :option="chartOptionComputed" :theme="chartTheme" key="province"/> -->
     </div>
     <!-- <div class="chart-content" v-show="chartTabs[1].active">
@@ -30,14 +27,19 @@
 
 <script>
 import IEcharts from 'vue-echarts-v3/src/full.js'
-import echarts from 'echarts'
 import theme from '@/utils/theme.mopon'
 import {convertData} from './geoCoordMap'
 import china from 'echarts/map/json/china.json'
 IEcharts.__echarts__.registerTheme('mopon', theme)
 IEcharts.__echarts__.registerMap('china', china)
-echarts.registerTheme('mopon', theme)
-echarts.registerMap('china', china)
+
+// let cities = convertData([{name: '海门', value: 99},
+//   {name: '鄂尔多斯', value: 12},
+//   {name: '招远', value: 12},
+//   {name: '舟山', value: 12},
+//   {name: '齐齐哈尔', value: 14},
+//   {name: '盐城', value: 15}])
+// console.log(cities)
 
 export default {
   components: {
@@ -49,8 +51,7 @@ export default {
       default: function () {
         return []
       }
-    },
-    provinces: Array
+    }
   },
   // computed: {
   //   scaleCities () {
@@ -60,8 +61,6 @@ export default {
   // },
   data () {
     return {
-      myChart: null,
-      myChart2: null,
       chartOption: null,
       chartTheme: 'mopon',
       chartTabs: [
@@ -83,6 +82,7 @@ export default {
     chartOptionComputed () {
       let activeChart = this.chartTabs.filter(v => v.active)[0]
       let option
+      console.log(activeChart.alias)
       if (activeChart.alias === 'city') {
         option = this.getChartOption()
       }
@@ -96,6 +96,7 @@ export default {
     chartTabs (val) {
       let activeChart = val.filter(v => v.active)[0]
       let option
+      console.log(activeChart.alias)
       if (activeChart.alias === 'city') {
         option = this.getChartOption()
       }
@@ -105,31 +106,15 @@ export default {
       this.chartOption = option
     },
     chartOptionComputed (val) {
+      console.log(val)
       const vm = this
       this.$nextTick(() => {
         // vm.$refs.chart.update()
-        vm.initCharts()
+        vm.$refs.chart.instance.setOption(val)
       })
     }
   },
-  mounted () {
-    this.initCharts()
-  },
   methods: {
-    initCharts () {
-      const vm = this
-      vm.myChart = echarts.init(vm.$refs.chartContent[0], 'mopon', {
-        width: window.innerWidth,
-        height: 'auto'
-      })
-      vm.myChart.setOption(vm.getChartOption())
-
-      vm.myChart2 = echarts.init(vm.$refs.chartContent[1], 'mopon', {
-        width: window.innerWidth,
-        height: 'auto'
-      })
-      vm.myChart2.setOption(vm.getchartOptionProvince())
-    },
     customColor (color, data, name = '') {
       return {
         name: name,
@@ -199,7 +184,7 @@ export default {
               show: false
             }
           },
-          roam: true,
+          // roam: true,
           itemStyle: {
             normal: {
               areaColor: '#edeff0',
@@ -211,12 +196,12 @@ export default {
           }
         },
         series: [
-          vm.customColor('#00db9c', scaleCities.slice(0, 1)),
+          // vm.customColor('#00db9c', scaleCities.slice(0, 1)),
           {
             name: '',
             type: 'effectScatter',
             coordinateSystem: 'geo',
-            data: convertData(scaleCities.slice(1)),
+            data: convertData(scaleCities.slice(0)),
             symbolSize: function (val) {
               return val[2] / 10
             },
@@ -247,7 +232,6 @@ export default {
       }
     },
     getchartOptionProvince () {
-      const vm = this
       return {
         // title: {
         //   text: 'USA Population Estimates (2012)',
@@ -265,16 +249,16 @@ export default {
           formatter: function (params) {
             var value = (params.value + '').split('.')
             value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,')
-            return params.name ? params.name + ': ' + value : '暂无数据'
+            return params.seriesName + '<br/>' + params.name + ': ' + value
           }
         },
         visualMap: {
           min: 500,
-          max: 100000000,
+          max: 38000000,
           inRange: {
             color: ['#f1d412', '#00db9c', '#26a7ff']
           },
-          text: ['数量多', '数量少'], // 文本，默认为数值文本
+          text: ['High', 'Low'], // 文本，默认为数值文本
           calculable: true,
           orient: 'horizontal'
         },
@@ -296,28 +280,66 @@ export default {
             roam: true,
             map: 'china',
             itemStyle: {
-              areaColor: '#edeff0',
-              borderColor: '#999'
-              // itemStyle: {
-              //   normal: {
-              //     areaColor: '#edeff0',
-              //     borderColor: '#999'
-              //   },
-              //   emphasis: {
-              //     areaColor: '#ccc'
-              //   }
-              // },
+              emphasis: {label: {show: true}}
             },
-            emphasis: {
-              // label: {show: true},
-              itemStyle: {areaColor: '#ccc'}
-            },
-
             // 文本位置修正
             textFixed: {
               Alaska: [20, -20]
             },
-            data: vm.provinces
+            data: [
+              {name: '上海', value: 54822023},
+              {name: '北京', value: 731449},
+              {name: '合肥', value: 6553255},
+              {name: '广东', value: 2949131},
+              {name: 'California', value: 38041430},
+              {name: 'Colorado', value: 5187582},
+              {name: 'Connecticut', value: 3590347},
+              {name: 'Delaware', value: 917092},
+              {name: 'District of Columbia', value: 632323},
+              {name: 'Florida', value: 19317568},
+              {name: 'Georgia', value: 9919945},
+              {name: 'Hawaii', value: 1392313},
+              {name: 'Idaho', value: 1595728},
+              {name: 'Illinois', value: 12875255},
+              {name: 'Indiana', value: 6537334},
+              {name: 'Iowa', value: 3074186},
+              {name: 'Kansas', value: 2885905},
+              {name: 'Kentucky', value: 4380415},
+              {name: 'Louisiana', value: 4601893},
+              {name: 'Maine', value: 1329192},
+              {name: 'Maryland', value: 5884563},
+              {name: 'Massachusetts', value: 6646144},
+              {name: 'Michigan', value: 9883360},
+              {name: 'Minnesota', value: 5379139},
+              {name: 'Mississippi', value: 2984926},
+              {name: 'Missouri', value: 6021988},
+              {name: 'Montana', value: 1005141},
+              {name: 'Nebraska', value: 1855525},
+              {name: 'Nevada', value: 2758931},
+              {name: 'New Hampshire', value: 1320718},
+              {name: 'New Jersey', value: 8864590},
+              {name: 'New Mexico', value: 2085538},
+              {name: 'New York', value: 19570261},
+              {name: 'North Carolina', value: 9752073},
+              {name: 'North Dakota', value: 699628},
+              {name: 'Ohio', value: 11544225},
+              {name: 'Oklahoma', value: 3814820},
+              {name: 'Oregon', value: 3899353},
+              {name: 'Pennsylvania', value: 12763536},
+              {name: 'Rhode Island', value: 1050292},
+              {name: 'South Carolina', value: 4723723},
+              {name: 'South Dakota', value: 833354},
+              {name: 'Tennessee', value: 6456243},
+              {name: 'Texas', value: 26059203},
+              {name: 'Utah', value: 2855287},
+              {name: 'Vermont', value: 626011},
+              {name: 'Virginia', value: 8185867},
+              {name: 'Washington', value: 6897012},
+              {name: 'West Virginia', value: 1855413},
+              {name: 'Wisconsin', value: 5726398},
+              {name: 'Wyoming', value: 576412},
+              {name: 'Puerto Rico', value: 3667084}
+            ]
           }
         ]
       }
@@ -350,7 +372,7 @@ export default {
   margin-top: 16px;
 }
 .chart-content {
-  height: 600px;
+  height: 500px;
 }
 .chart-tabs {
     padding-top: 36px;

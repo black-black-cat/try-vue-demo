@@ -47,7 +47,7 @@ export default {
           formatter: '{b}: {c} ({d}%)'
         },
         legend: {
-          bottom: 36,
+          bottom: 0,
           data: vm.pieLegendCustomed
         },
         series: [
@@ -73,6 +73,7 @@ export default {
 <style lang="scss" scoped>
 .m-age {
   margin-top: 16px;
+  padding-bottom: 56px;
 }
 .chart-content {
   height: 600px;

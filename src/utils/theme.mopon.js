@@ -85,9 +85,9 @@ var theme = {
       }
     },
     splitArea: {
-      show: true,
+      show: false,
       areaStyle: {
-        color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.1)']
+        // color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.1)']
       }
     },
     splitLine: {
