@@ -18,7 +18,7 @@
     :newUsers="newUsers" :oldUsers="oldUsers" :xAxis="barX"
     :counting="barCounting"
     ></bar-chart>
-    <list :details="details"></list>
+    <list v-if="details && details.length" :details="details"></list>
     <van-popup v-model="popupShow" position="bottom">
       <picker :columns="years" :show-toolbar="true" @confirm="onPickerChange" ref="picker"/>
     </van-popup>
@@ -47,6 +47,7 @@ export default {
         next: true
       },
       years: [],
+      yearsCount: 3,
       newUsers: [],
       oldUsers: [],
       barX: [],
@@ -54,12 +55,44 @@ export default {
       barCounting: {},
       details: [],
       popupShow: false,
-      isYearStepping: false
+      isYearStepping: false,
+      defaultsBarData: {
+        'totalNum': 0,
+        'reTravelNum': 0,
+        'oldUser': [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        'newUser': [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
     }
   },
   computed: {
     startYear () {
-      return this.thisYear - 4
+      return this.thisYear - (this.yearsCount - 1)
     }
   },
   mounted () {
@@ -115,7 +148,7 @@ export default {
     setYears () {
       let thisYear = this.thisYear
       let years = []
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < this.yearsCount; i++) {
         years.unshift(thisYear--)
       }
       this.years = [{
@@ -125,10 +158,14 @@ export default {
     },
     getBarChartData (year) {
       const vm = this
+      const _ = vm.$_
       return this.$api.userReLabelStatisticsReport({year})
         .then(res => {
           if (res.type) return
           let data = res.data
+          if (_.isEmpty(data)) {
+            data = vm.defaultsBarData
+          }
           let monthCount = 1
           vm.newUsers = data.newUser.map(perMonth => perMonth * 100)
           vm.oldUsers = data.oldUser.map(perMonth => perMonth * 100)

@@ -28,7 +28,7 @@
           <div class="btn left" @click="stepDate('prev')">前一天</div>
           <div class="center">
             <div class="num">
-              <span>{{currDate.amount}}</span>
+              <span>{{currDate.amount ? currDate.amount : '0'}}</span>
               <!-- <span class="small">万</span> -->
             </div>
             <div v-show="currDate.today" class="time">今日实时 更新时间{{hourFormate()}}</div>
@@ -84,8 +84,9 @@
       </ul>
     </div>
     <template v-if="!isLite">
-      <more target="/dataAnalyze/salesTrend"></more>
+      <more target="/dataAnalyze/salesTrend" v-if="isShowMore"></more>
       <calendar v-model="calendar.calendarShow" :defaultDate="calendar.defaultDate" :month="calendar.month" :direction="calendar.direction"
+      :minDate="new Date('2017/1/1')"
       @close="hideCalendar" @change="onCalendarChange"
       ref="calendar"
       ></calendar>
@@ -163,7 +164,9 @@ export default {
       loadingDatePoint: false,
       datePoint: null,
       currDate: {},
-      saleRankDetails: []
+      saleRankDetails: [],
+      isShowMore: false,
+      currDateStr: ''
     }
   },
 
@@ -242,13 +245,18 @@ export default {
     },
     saleRankDetailsCutted () {
       let details = this.saleRankDetails
+      if (!details) return []
       return this.isLite ? details : details.slice(0, 5)
     }
   },
 
   mounted () {
     const vm = this
-    !vm.isLite && vm.getDateSales()
+    !vm.isLite && vm.getDateSales() && setInterval(function () {
+      vm.currDateStr &&
+      (vm.currDateStr === _.dateFormat(new Date(), 'yyyy-MM-dd')) &&
+      vm.getDateSales(vm.currDateStr)
+    }, 1000 * 60 * 2)
     vm.getLineChartDate('week')
   },
 
@@ -281,8 +289,9 @@ export default {
     getDateSales (strDate) {
       const vm = this
       let day = strDate ? new Date(strDate) : new Date()
-
-      vm.loadingDatePoint = true
+      let oldDateStr = vm.currDateStr
+      vm.currDateStr = _.dateFormat(day, 'yyyy-MM-dd')
+      // vm.loadingDatePoint = true
       return vm.$api.daySales({
         pointDate: _.dateFormat(day, 'yyyy-MM-dd')
       })
@@ -291,16 +300,17 @@ export default {
           if (res.type) {
             vm.$toast(res.message)
             let excess = true
+            vm.currDateStr = oldDateStr
             return excess
           }
-
-          vm.datePoint = vm.$_.map(res.data, date => {
+          vm.datePoint = vm.$_.map(res.data, (date, k) => {
             date.timestamp = +new Date(date.pointDate)
+            date.pointDate = k
             date.displayName = _.dateFormat(new Date(date.pointDate), 'yyyy年M月d日')
             return date
           })
           vm.datePoint = vm.$_.sortBy(vm.datePoint, ['timestamp'])
-          vm.currDate = vm.datePoint[1]
+          vm.currDate = vm.datePoint.length > 2 ? vm.datePoint[1] : vm.datePoint[0]
           vm.currDate.today = true
 
           vm.calendar = {
@@ -317,13 +327,19 @@ export default {
       })
         .then(res => {
           if (res.type) return
-          vm.lineChartData = res.data.series
+          vm.lineChartData = res.data.details
           vm.lineChartData = _.map(vm.lineChartData, v => {
-            v.timestamp = +new Date(v.name)
-            return v
+            let obj = {}
+            obj.name = v.timeFlag
+            obj.value = v.saleAmount
+            obj.timestamp = +new Date(obj.name)
+            return obj
           })
           vm.lineChartData = _.sortBy(vm.lineChartData, ['timestamp'])
           vm.lineChartX = _.map(vm.lineChartData, v => v.name)
+          if (vm.lineChartData.length > 5) {
+            vm.isShowMore = true
+          }
 
           vm.saleRankDetails = res.data.details
           _.each(vm.saleRankDetails, item => {
@@ -500,7 +516,7 @@ export default {
 }
 
 .chart {
-  padding: 0 28px 60px;
+  padding: 0 28px 0;
   &-head {
     padding-top: 40px;
     font-size: 34px;

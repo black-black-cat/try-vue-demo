@@ -1,5 +1,5 @@
 <template>
-  <div class="m-people-counting">
+  <div class="m-people-counting" v-if="data && data.length">
     <section-title>游客出行人数占比</section-title>
     <div class="chart-content">
       <IEcharts :option="chartOption" :theme="chartTheme" />
@@ -10,27 +10,31 @@
 <script>
 import IEcharts from 'vue-echarts-v3/src/full.js'
 import theme from '@/utils/theme.mopon'
+import maxBy from 'lodash/maxBy'
 IEcharts.__echarts__.registerTheme('mopon', theme)
 export default {
   components: {
     IEcharts
   },
+  props: {
+    xAxis: Array,
+    data: Array
+  },
   data () {
     return {
-      chartTheme: 'mopon',
-      chartData: [120, 200, 150, 80, 70, 110, 130]
+      chartTheme: 'mopon'
     }
   },
   computed: {
     chartDataCustomed () {
-      let value = Math.max(...this.chartData)
+      let value = maxBy(this.data, 'value')
       let item = {
-        value,
+        ...value,
         itemStyle: {
           color: '#00db9c'
         }
       }
-      return this.chartData.map(v => {
+      return this.data.map(v => {
         if (v === value) {
           return item
         }
@@ -40,16 +44,25 @@ export default {
     chartOption () {
       const vm = this
       const chartOption = {
+        color: ['#26a7ff'],
         grid: {
           left: '12%',
           right: '6%'
         },
         xAxis: {
           type: 'category',
-          data: ['1人', '2人', '3人', '4人', '5人', '6人', '7人']
+          // data: ['1人', '2人', '3人', '4人', '5人', '6人', '7人']
+          data: vm.xAxis
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          axisLabel: {
+            // rotate: 45,
+            formatter: (v) => {
+              let str = (v * 100).toFixed(0) + '%'
+              return str
+            }
+          }
         },
         calculable: true,
         series: [{
@@ -59,10 +72,11 @@ export default {
             show: true,
             position: 'top',
             distance: 10,
-            rotate: 45
-            // formatter: (obj) => {
-            //   return `${obj.value} (${obj.percent}%)`
-            // }
+            // rotate: 45,
+            formatter: (obj) => {
+              let str = (obj.value * 100).toFixed(2) + '%'
+              return str
+            }
           }
         }]
       }

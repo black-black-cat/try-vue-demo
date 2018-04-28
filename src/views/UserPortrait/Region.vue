@@ -165,7 +165,7 @@ export default {
     },
     getChartOption () {
       const vm = this
-      const scaleCities = (vm.cities || []).map(city => { return {name: city.name, value: city.value / 10000} })
+      const scaleCities = (vm.cities || []).map(city => { return {name: city.name, value: city.value} })
       return {
         grid: {
           width: '100%',

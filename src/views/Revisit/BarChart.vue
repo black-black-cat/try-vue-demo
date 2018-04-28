@@ -1,6 +1,6 @@
 <template>
   <div class="m-bar-chart">
-    <section-title>游客年龄占比</section-title>
+    <section-title>重游客占比</section-title>
     <div class="chart-content">
       <IEcharts :option="chartOption" :theme="chartTheme" />
     </div>
@@ -32,23 +32,6 @@ export default {
   computed: {
     chartOption () {
       const vm = this
-      // const labelOption = {
-      //   normal: {
-      //     show: true,
-      //     // position: app.config.position,
-      //     // distance: app.config.distance,
-      //     // align: app.config.align,
-      //     // verticalAlign: app.config.verticalAlign,
-      //     // rotate: app.config.rotate,
-      //     formatter: '{c}  {name|{a}}',
-      //     fontSize: 16,
-      //     rich: {
-      //       name: {
-      //         textBorderColor: '#fff'
-      //       }
-      //     }
-      //   }
-      // }
       return {
         // color: ['#003366', '#006699', '#4cabce', '#e5323e'],
         grid: {
@@ -72,19 +55,6 @@ export default {
           icon: 'circle'},
           {name: '重游客占比', icon: 'circle'}]
         },
-        // toolbox: {
-        //   show: true,
-        //   orient: 'vertical',
-        //   left: 'right',
-        //   top: 'center',
-        //   feature: {
-        //     mark: {show: true},
-        //     dataView: {show: true, readOnly: false},
-        //     magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
-        //     restore: {show: true},
-        //     saveAsImage: {show: true}
-        //   }
-        // },
         calculable: true,
         xAxis: [
           {

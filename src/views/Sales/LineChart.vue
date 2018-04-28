@@ -81,7 +81,8 @@ export default {
         grid: {
           top: 40,
           left: '12%',
-          right: '6%'
+          right: '6%',
+          height: 185
         },
         tooltip: {
           trigger: 'axis',
@@ -116,7 +117,10 @@ export default {
           boundaryGap: false,
           data: [],
           axisLabel: {
-            formatter: v => v.slice(5)
+            formatter: v => {
+              let re = /\d{2,4}-\d{1,2}-\d{1,2}/
+              return re.test(v) ? v.slice(5) : v
+            }
           }
         },
         yAxis: {
@@ -218,7 +222,7 @@ export default {
     }
   }
   &-content {
-    height: 500px;
+    height: 600px;
   }
 }
 </style>

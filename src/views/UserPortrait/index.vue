@@ -1,8 +1,8 @@
 <template>
   <div class="view-user-portrait">
     <gender :male="gender.male" :female="gender.female"></gender>
-    <age :pieData="age"></age>
-    <people-counting></people-counting>
+    <age v-if="age" :pieData="age"></age>
+    <people-counting :data="peopleCounting.data" :xAxis="peopleCounting.xAxis"></people-counting>
     <region v-if="cities && cities.length" :cities="cities" :provinces="provinces"></region>
     <city-ratio :region="region"></city-ratio>
   </div>
@@ -27,6 +27,8 @@ export default {
     return {
       gender: {},
       age: null,
+      peopleCounting: {},
+      peopleCountingReady: false,
       cities: null,
       provinces: [],
       region: null
@@ -45,6 +47,15 @@ export default {
       .then(res => {
         if (res.type) return
         vm.age = vm.$_.map(res.data.series, (v, k) => { return {value: v, name: k + '后'} })
+      })
+
+    // 出行人数
+    vm.$api.travelersReport()
+      .then(res => {
+        if (res.type) return
+        vm.peopleCounting.data = res.data.series
+        vm.peopleCounting.xAxis = _.map(res.data.xAxis, v => v + '人')
+        vm.peopleCountingReady = true
       })
 
     vm.$api.userAreaBuyNumReport()

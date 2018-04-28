@@ -1,3 +1,4 @@
+// https://github.com/voltraco/localstorage
 // https://github.com/voltraco/localstorage/blob/master/index.js
 class LocalStorage {
   constructor (namespace) {

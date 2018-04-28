@@ -1,14 +1,13 @@
 import Fly from 'flyio/dist/npm/fly'
-import LocalStorage from '@/utils/LocalStorage'
 import router from '@/router'
+import {isLogin, delStoredToken, storeLogin} from './auth'
 const fly = new Fly()
-let token = new LocalStorage('app')
 
 fly.interceptors.request.use((request) => {
   // Do something before request is sent
-  let storedToken = getToken()
+  let storedToken = isLogin()
   if (storedToken) {
-    request.headers.Authorization = storedToken
+    request.headers.Authorization = storedToken.tokenStr
   }
 
   // Complete the request with custom data
@@ -19,7 +18,20 @@ fly.interceptors.response.use((res) => {
   if (typeof res.data === 'string') {
     res.data = JSON.parse(res.data)
   }
+  if (typeof res.data.data === 'string') {
+    let oldData = res.data.data
+    try {
+      res.data.data = JSON.parse(res.data.data)
+    } catch (err) {
+      res.data.data = oldData
+    }
+  }
+
   if (!res.data.flag) {
+    if (res.data.errorCode === 'A003' || res.data.errorCode === 'A004') {
+      router.replace({path: '/login'})
+      delStoredToken()
+    }
     // eslint-disable-next-line
     return Promise.reject({
       type: -1,
@@ -27,6 +39,7 @@ fly.interceptors.response.use((res) => {
       res: res.data
     })
   }
+
   return res.data
 }, (error) => {
   console.log('promise error:' + error)
@@ -44,23 +57,13 @@ export default fly
 export const login = (payload) => {
   return fly.get('/mobile/authority/login.html', payload)
     .then((res) => {
-      token.put('token', {
-        ...res.data,
-        time: +new Date()
-      })
+      storeLogin(res.data.token)
       router.replace({path: '/dataAnalyze'})
       return res
     })
     .catch((err) => {
       return err
     })
-}
-
-function getToken () {
-  let [err, storedToken] = token.get('token')
-  if (!err) {
-    return storedToken.token
-  }
 }
 
 // 三日销售数据
@@ -87,6 +90,13 @@ export const userSexAccountingReport = () => {
 // 游客年龄比例
 export const userAgeBuyNumReport = () => {
   return fly.get('/mobile/periodReport/userAgeBuyNumReport.html')
+    .then(res => res)
+    .catch(err => err)
+}
+
+// 出行人数
+export const travelersReport = () => {
+  return fly.get('/mobile/periodReport/travelersReport.html')
     .then(res => res)
     .catch(err => err)
 }

@@ -13,8 +13,12 @@
         </div>
       </div>
       <div class="content-bar">
-        <div class="left"></div>
-        <div class="right"></div>
+        <transition name="scalex">
+          <div class="left" v-if="anim" :style="styleMale"></div>
+        </transition>
+        <transition name="scalex">
+          <div class="right" v-if="anim" :style="styleFemale"></div>
+        </transition>
       </div>
     </div>
   </div>
@@ -28,7 +32,30 @@ export default {
   },
   data () {
     return {
-
+      anim: false
+    }
+  },
+  mounted () {
+    const vm = this
+    this.$nextTick(() => {
+      // vm.anim = true
+    })
+    setTimeout(() => {
+      vm.anim = true
+    }, 1000)
+  },
+  computed: {
+    styleMale () {
+      return {
+        width: this.male,
+        transformOrigin: '100% 50%'
+      }
+    },
+    styleFemale () {
+      return {
+        width: this.female,
+        transformOrigin: '0 50%'
+      }
     }
   }
 }
@@ -36,6 +63,13 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../styles/theme";
+.scalex-enter-active, .scalex-leave-active {
+  transition: transform .5s;
+  transform: scale(1);
+}
+.scalex-enter, .scalex-leave-to {
+  transform: scale(0);
+}
 .content {
   padding: 40px 28px 60px;
   &-text {
@@ -54,12 +88,12 @@ export default {
       height: 20px;
     }
     .left {
-      width: 68.3%;
+      width: 0;
       margin-right: 4px;
       border-radius: 20px 0 0 20px;
     }
     .right {
-      width: 31.7%;
+      width: 0;
       border-radius: 0 20px 20px 0;
     }
   }

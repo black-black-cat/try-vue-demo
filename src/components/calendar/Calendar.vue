@@ -520,7 +520,8 @@ export default {
                 new Date(
                   this.minDate.getFullYear(),
                   this.minDate.getMonth(),
-                  this.minDate.getUTCDate()
+                  // this.minDate.getUTCDate()
+                  this.minDate.getDate()
                 ) <
                 0
             ) {
@@ -532,7 +533,8 @@ export default {
                 new Date(
                   this.maxDate.getFullYear(),
                   this.maxDate.getMonth(),
-                  this.maxDate.getUTCDate() + 1
+                  // this.maxDate.getUTCDate() + 1
+                  this.maxDate.getDate() + 1
                 ) >
                 0
             ) {

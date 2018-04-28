@@ -25,6 +25,9 @@ export default {
     pieLegendCustomed () {
       return this.legend.map(v => { return {name: v, icon: 'circle'} })
     },
+    filteredData () {
+      return (this.data || []).filter(v => v.value > 0)
+    },
     chartOption () {
       const vm = this
       return {
@@ -67,7 +70,7 @@ export default {
                 show: true
               }
             },
-            data: vm.data
+            data: vm.filteredData
           }
         ]
       }

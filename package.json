@@ -11,7 +11,8 @@
     "build": "node build/build.js",
     "sprite": "gulp -f build/gulpfile.js",
     "i": "gulp -f build/gulpfile.js sprite",
-    "preview": "browser-sync start --server dist --port 6003"
+    "preview": "browser-sync start --server dist --port 6003",
+    "dev:me": "webpack --watch --progress --config build/webpack.dev.me.conf.js"
   },
   "dependencies": {
     "amfe-flexible": "^2.2.1",

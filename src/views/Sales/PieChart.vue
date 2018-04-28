@@ -6,7 +6,7 @@
       <IEcharts v-if="isShow" :option="chartOption" :theme="chartTheme" />
     </div>
     <div class="row">
-      <div class="col" v-for="(item, i) in [...dataGeneral].reverse()" :key="i">
+      <div class="col" v-for="(item, i) in dataGeneral" :key="i">
         <span class="num">{{item.value}}</span>
         <span class="name">{{item.name}}销售总额</span>
       </div>

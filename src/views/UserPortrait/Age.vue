@@ -2,7 +2,7 @@
   <div class="m-age">
     <section-title>游客年龄占比</section-title>
     <div class="chart-content">
-      <IEcharts :option="lineChart" :theme="chartTheme" />
+      <IEcharts :option="chartOption" :theme="chartTheme" />
     </div>
   </div>
 </template>
@@ -33,13 +33,13 @@ export default {
     }
   },
   computed: {
-    pieDataTotal () {
-      return this.pieData.reduce((memo, item) => memo + item.value, 0)
+    pieDataFiltered () {
+      return this.pieData.filter((v) => v && v.value > 0)
     },
     pieLegendCustomed () {
       return this.pieLegend.map(v => { return {name: v, icon: 'circle'} })
     },
-    lineChart () {
+    chartOption () {
       const vm = this
       return {
         tooltip: {
@@ -61,7 +61,7 @@ export default {
                 return `${obj.percent}% \n ${obj.name}`
               }
             },
-            data: vm.pieData
+            data: vm.pieDataFiltered
           }
         ]
       }

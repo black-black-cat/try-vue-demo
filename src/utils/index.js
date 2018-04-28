@@ -4,6 +4,7 @@ import mapValues from 'lodash/mapValues'
 import map from 'lodash/map'
 import sortBy from 'lodash/sortBy'
 import flatten from 'lodash/flatten'
+import isEmpty from 'lodash/isEmpty'
 import {default as timeFormat, setTimeTemplate} from './timeFormat'
 import fecha from 'fecha'
 
@@ -30,6 +31,7 @@ export default {
   mapValues,
   sortBy,
   flatten,
+  isEmpty,
   dateFormat,
   timeFormat,
   setTimeTemplate

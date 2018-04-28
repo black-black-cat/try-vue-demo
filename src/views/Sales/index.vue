@@ -94,12 +94,12 @@ export default {
           let data = res.data || {}
           vm.pieChart.dataGeneral = [
             {
-              name: '自有渠道',
-              value: data.selfChannelAmount
-            },
-            {
               name: '第三方渠道',
               value: data.thirdChannelAmount
+            },
+            {
+              name: '自有渠道',
+              value: data.selfChannelAmount
             }
           ]
           let detail = _.map(data.series, (v, k) => {
@@ -109,10 +109,10 @@ export default {
             }
           })
 
-          detail.push({
-            name: '第三方渠道',
-            value: data.thirdChannelAmount
-          })
+          // detail.push({
+          //   name: '第三方渠道',
+          //   value: data.thirdChannelAmount
+          // })
 
           vm.pieChart.dataDetail = detail || []
           vm.pieChart = {
