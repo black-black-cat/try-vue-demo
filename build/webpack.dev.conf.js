@@ -42,10 +42,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
-    },
-    // proxy: {
-    //   "/mobile": "http://192.168.25.238:8086"
-    // }
+    }
   },
   plugins: [
     new webpack.DefinePlugin({

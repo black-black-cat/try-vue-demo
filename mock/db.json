@@ -1,0 +1,95 @@
+{
+  "login.html": {
+    "flag": true,
+    "message": "登录成功！",
+    "data": {
+      "token": "12345"
+    }
+  },
+  "scenicNearbyDaySaleAndUsedReport.html": {
+    "flag": true,
+    "message": "成功！",
+    "data": {
+      "2018-04-08": {
+        "amount": 2536521,
+        "pointDate": "2018-04-08",
+        "usedNumber": 6548,
+        "saleNumber": 5264
+      },
+      "2018-04-07": {
+        "amount": 658421,
+        "pointDate": "2018-04-07",
+        "usedNumber": 7854,
+        "saleNumber": 7564
+      },
+      "2018-04-09": {
+        "amount": 2653541,
+        "pointDate": "2018-04-09",
+        "usedNumber": 6859,
+        "saleNumber": 5897
+      }
+    }
+  },
+  "scenicSaleRankReport.html": {
+    "message": "成功",
+    "flag": true,
+    "errorCode": "A000032",
+    "data": {
+      "series": [
+        {
+          "name": "2018-04-05",
+          "value": "0"
+        },
+        {
+          "name": "2018-04-06",
+          "value": "666"
+        },
+        {
+          "name": "2018-04-07",
+          "value": "1332"
+        },
+        {
+          "name": "2018-04-08",
+          "value": "1998"
+        },
+        {
+          "name": "2018-04-09",
+          "value": "2664"
+        },
+        {
+          "name": "2018-04-10",
+          "value": "3330"
+        },
+        {
+          "name": "2018-04-11",
+          "value": "3996"
+        }
+      ],
+      "details": [
+        {
+          "saleAmount": 6851,
+          "lastUpdateTime": null,
+          "timeFlag": "2018-04-01",
+          "scenicCode": "",
+          "saleNum": 452
+        },
+        {
+          "saleAmount": 666,
+          "lastUpdateTime": null,
+          "timeFlag": "2018-04-02",
+          "scenicCode": "",
+          "saleNum": 22
+        }
+      ],
+      "xAxis": [
+        "04-05",
+        "04-06",
+        "04-07",
+        "04-08",
+        "04-09",
+        "04-10",
+        "04-11"
+      ]
+    }
+  }
+}
